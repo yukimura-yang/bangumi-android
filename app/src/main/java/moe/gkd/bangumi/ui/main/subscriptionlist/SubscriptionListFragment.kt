@@ -2,12 +2,15 @@ package moe.gkd.bangumi.ui.main.subscriptionlist
 
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
 import moe.gkd.bangumi.BANGUMI_ID
 import moe.gkd.bangumi.BANGUMI_TITLE
+import moe.gkd.bangumi.R
 import moe.gkd.bangumi.databinding.FragmentSubscriptionListBinding
 import moe.gkd.bangumi.ui.BaseFragment
 import moe.gkd.bangumi.ui.bangumi.BangumiActivity
@@ -25,6 +28,7 @@ class SubscriptionListFragment : BaseFragment<FragmentSubscriptionListBinding>()
     private val adapter = SubscriptionListAdapter()
 
     override fun initViews() {
+        setHasOptionsMenu(true)
         adapter.setOnItemClickedListener {
             val intent = Intent(requireContext(), BangumiActivity::class.java).apply {
                 putExtra(BANGUMI_ID, it.subscription.id)
@@ -47,7 +51,8 @@ class SubscriptionListFragment : BaseFragment<FragmentSubscriptionListBinding>()
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.bangumi_menu_add, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 }

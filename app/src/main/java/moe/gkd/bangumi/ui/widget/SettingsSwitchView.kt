@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.CompoundButton
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import moe.gkd.bangumi.R
@@ -27,6 +28,10 @@ class SettingsSwitchView @JvmOverloads constructor(
             binding = ViewSettingsSwitchBinding.inflate(LayoutInflater.from(context), this, true)
             initViews()
         }
+        val array =
+            context.obtainStyledAttributes(attrs, R.styleable.SettingsSwitchView, defStyleAttr, 0)
+        setTitle(array.getString(R.styleable.SettingsSwitchView_title) ?: "")
+        array.recycle()
     }
 
     private fun initViews() {
@@ -49,7 +54,11 @@ class SettingsSwitchView @JvmOverloads constructor(
     }
 
     fun setTitle(str: String) {
-        title.set(str)
+        if (isInEditMode) {
+            findViewById<TextView>(R.id.itemTitle).setText(str)
+        } else {
+            title.set(str)
+        }
     }
 
     fun setChecked(checked: Boolean) {

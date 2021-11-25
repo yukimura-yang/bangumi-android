@@ -47,6 +47,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
         }
     }
 
+    override fun onBackPressed() {
+        if (navController.currentDestination!!.id == R.id.nav_settings) {
+            binding.navigation.setCheckedItem(R.id.bangumi)
+            switchFragment(R.id.nav_bangumi)
+            return
+        }
+        super.onBackPressed()
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         when (id) {

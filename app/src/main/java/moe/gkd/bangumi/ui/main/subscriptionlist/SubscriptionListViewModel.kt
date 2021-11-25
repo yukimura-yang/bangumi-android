@@ -37,7 +37,6 @@ class SubscriptionListViewModel : BaseViewModel() {
             }
         }
     }
-
 //    fun getBangumis() {
 //        viewModelScope.launch {
 //            withContext(Dispatchers.IO) {

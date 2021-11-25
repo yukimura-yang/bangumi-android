@@ -25,6 +25,7 @@
         android:paddingRight="6dp">
 
         <TextView
+            android:id="@+id/itemTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"

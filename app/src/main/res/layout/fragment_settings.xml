@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -10,8 +11,7 @@
             type="ObservableBoolean" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -35,9 +35,9 @@
 
                 <moe.gkd.bangumi.ui.widget.SettingsSwitchView
                     android:id="@+id/bangumi_cdn"
-                    setTitle='@{"开启CDN加速"}'
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:title="开启CDN加速" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -48,46 +48,47 @@
 
                 <moe.gkd.bangumi.ui.widget.SettingsTextView
                     android:id="@+id/transmission_host"
-                    setTitle='@{"主机名"}'
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:title="主机名" />
 
                 <moe.gkd.bangumi.ui.widget.SettingsTextView
                     android:id="@+id/transmission_port"
-                    setNum="@{true}"
-                    setTitle='@{"端口"}'
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:inputType="number"
+                    app:title="端口" />
 
                 <moe.gkd.bangumi.ui.widget.SettingsSwitchView
                     android:id="@+id/transmission_ssl"
-                    setTitle='@{"启用SSL"}'
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:title="启用SSL" />
 
                 <moe.gkd.bangumi.ui.widget.SettingsTextView
                     android:id="@+id/transmission_username"
-                    setTitle='@{"账号"}'
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:title="账号" />
 
                 <moe.gkd.bangumi.ui.widget.SettingsTextView
                     android:id="@+id/transmission_password"
-                    setTitle='@{"密码"}'
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:inputType="password"
+                    app:title="密码" />
 
                 <moe.gkd.bangumi.ui.widget.SettingsTextView
                     android:id="@+id/transmission_rpc"
-                    setTitle='@{"RPC路径"}'
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:title="RPC路径" />
 
                 <moe.gkd.bangumi.ui.widget.SettingsTextView
                     android:id="@+id/transmission_save_dir"
-                    setTitle='@{"保存路径"}'
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:title="保存路径" />
 
                 <Button
                     android:id="@+id/checkRequest"

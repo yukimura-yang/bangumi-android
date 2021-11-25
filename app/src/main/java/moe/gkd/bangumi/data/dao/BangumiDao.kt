@@ -13,6 +13,10 @@ interface BangumiDao {
     fun getBangumis(): LiveData<List<BangumiEntity>>
 
     @Transaction
+    @Query("SELECT * FROM subscriptions")
+    fun getBangumis2(): List<BangumiEntity>
+
+    @Transaction
     @Query("SELECT * FROM subscriptions WHERE id = :id")
     fun getBangumiById(id: String): LiveData<BangumiEntity?>
 

@@ -1,8 +1,6 @@
 package moe.gkd.bangumi.ui.main.settings
 
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.ObservableBoolean
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
@@ -16,6 +14,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
     private val viewModel: SettingsViewModel by viewModels()
     private val checking = ObservableBoolean(false)
     override fun initViews() {
+        setHasOptionsMenu(true)
         binding.checking = checking
         //初始化数据
         binding.bangumiCdn.setChecked(MainApplication.INSTANCE.hashMap[USE_BANGUMI_MOE_CDN] as Boolean)
@@ -74,6 +73,11 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
         viewModel.toast.observe(this) {
             Snackbar.make(binding.root, it, LENGTH_SHORT).show()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun inflateViewBinding(

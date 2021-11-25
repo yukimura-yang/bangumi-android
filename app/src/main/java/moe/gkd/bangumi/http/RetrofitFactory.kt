@@ -31,6 +31,7 @@ class RetrofitFactory private constructor() {
             .addInterceptor(MoreBaseUrlInterceptor())
             .addInterceptor(initLogInterceptor())
             .addNetworkInterceptor(StethoInterceptor())
+            .dns(CustomDns())
             .build()
     }
 

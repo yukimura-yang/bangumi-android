@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Bangumi">
         <activity
+            android:name=".ui.addsubscription.AddSubscriptionActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.bangumi.BangumiActivity"
             android:exported="false" />
         <activity

@@ -66,7 +66,13 @@ class BangumiActivity : BaseActivity<ActivityBangumiBinding>(R.layout.activity_b
         viewModel.bangumi.observe(this) {
             val list: List<TorrentEntity> = it?.torrents ?: arrayListOf()
             val newList = list.sortedByDescending { it.getTimestamp() }
-            adapter.submitList(newList)
+            val oldList = adapter.currentList
+            val topUp = newList.size > oldList.size
+            adapter.submitList(newList) {
+                if (topUp) {
+                    binding.recyclerView.smoothScrollToPosition(0)
+                }
+            }
             if (list.isEmpty()) {
                 viewModel.updateSubscribe()
             }

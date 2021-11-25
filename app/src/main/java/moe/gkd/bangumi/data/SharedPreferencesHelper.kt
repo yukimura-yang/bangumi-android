@@ -16,8 +16,8 @@ object SharedPreferencesHelper {
         var transmissionSSL by boolean(false)
         var transmissionUsername by string("")
         var transmissionPassword by string("")
-        var transmissionRpc by string("")
-        var transmissionSaveDir by string("")
+        var transmissionRpc by string("/transmission/rpc")
+        var transmissionSaveDir by string("/volume2/public/Downloads")
     }
 
     abstract class Delegates {

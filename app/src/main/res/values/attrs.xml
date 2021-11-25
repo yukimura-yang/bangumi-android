@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="title" format="string" />
+    <declare-styleable name="SettingsSwitchView">
+        <attr name="title" />
+    </declare-styleable>
+    <declare-styleable name="SettingsTextView">
+        <attr name="title" />
+        <attr name="inputType" format="enum">
+            <enum name="text" value="0" />
+            <enum name="number" value="1" />
+            <enum name="password" value="2" />
+        </attr>
+    </declare-styleable>
+</resources>

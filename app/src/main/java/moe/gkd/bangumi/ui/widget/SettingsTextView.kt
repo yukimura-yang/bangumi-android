@@ -5,6 +5,7 @@ import android.text.InputType
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -21,7 +22,7 @@ class SettingsTextView @JvmOverloads constructor(
     private val isEnter = ObservableBoolean()
     private val title = ObservableField("")
     private var content: String = ""
-    private var isNum = false
+    private var inputType = 0
 
     fun setContent(str: String) {
         content = str
@@ -40,6 +41,11 @@ class SettingsTextView @JvmOverloads constructor(
             binding = ViewSettingsTextBinding.inflate(LayoutInflater.from(context), this, true)
             initViews()
         }
+        val array =
+            context.obtainStyledAttributes(attrs, R.styleable.SettingsTextView, defStyleAttr, 0)
+        inputType = array.getInt(R.styleable.SettingsTextView_inputType, 0)
+        setTitle(array.getString(R.styleable.SettingsTextView_title) ?: "")
+        array.recycle()
     }
 
     private var listener: OnInputListener? = null
@@ -57,10 +63,16 @@ class SettingsTextView @JvmOverloads constructor(
 
     private val dialogBinding by lazy {
         val binding = DialogEditTextBinding.inflate(LayoutInflater.from(context))
-        if (isNum) {
-            binding.editText.inputType = InputType.TYPE_CLASS_NUMBER
-        } else {
-            binding.editText.inputType = InputType.TYPE_CLASS_TEXT
+        when (inputType) {
+            1 -> {
+                binding.editText.inputType = InputType.TYPE_CLASS_NUMBER
+            }
+            2 -> {
+                binding.editText.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            }
+            else -> {
+                binding.editText.inputType = InputType.TYPE_CLASS_TEXT
+            }
         }
         binding
     }
@@ -90,14 +102,11 @@ class SettingsTextView @JvmOverloads constructor(
     }
 
     fun setTitle(str: String) {
-        title.set(str)
-    }
-
-    /**
-     * 输入类型是否为数字
-     */
-    fun setNum(isNum: Boolean) {
-        this.isNum = isNum
+        if (isInEditMode) {
+            findViewById<TextView>(R.id.itemTitle).setText(str)
+        } else {
+            title.set(str)
+        }
     }
 
     public interface OnInputListener {
