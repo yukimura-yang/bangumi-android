@@ -11,4 +11,6 @@ enum class EnumTransmissionMethod {
 
     @SerializedName("torrent-get")
     TORRENT_GET,
+    @SerializedName("torrent-set")
+    TORRENT_SET,
 }

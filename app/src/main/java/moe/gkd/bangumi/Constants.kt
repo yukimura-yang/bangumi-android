@@ -27,9 +27,6 @@ const val TRANSMISSION_SAVE_DIR = "transmission_save_dir"
 const val TRANSMISSION_SESSION_ID = "transmission_session_id"
 const val TRANSMISSION_AUTHORIZATION = "transmission_authorization"
 
-//合集tag，如果有这个tag就排除
-const val BANGUMI_MOE_TAG_COLLECTION = "54967e14ff43b99e284d0bf7"
-
 fun utc2Local(utcTime: String): String {
     val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm E")
     return Instant.parse(utcTime)

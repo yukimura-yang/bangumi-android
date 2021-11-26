@@ -62,6 +62,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
             R.id.bangumi -> {
                 switchFragment(R.id.nav_bangumi)
             }
+            R.id.transmission -> {
+                switchFragment(R.id.nav_transmission)
+            }
             R.id.settings -> {
                 switchFragment(R.id.nav_settings)
             }

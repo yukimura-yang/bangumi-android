@@ -17,6 +17,9 @@ abstract class BaseFragment<B : ViewBinding> : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if (_binding != null) {
+            return binding.root
+        }
         _binding = inflateViewBinding(inflater, container)
         initViews()
         initViewModel()

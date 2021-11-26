@@ -8,6 +8,10 @@
             android:title="BANGUMI"
             tools:checked="true" />
         <item
+            android:id="@+id/transmission"
+            android:icon="@drawable/ic_baseline_web_24"
+            android:title="TRANSMISSION" />
+        <item
             android:id="@+id/settings"
             android:icon="@drawable/ic_baseline_settings_24"
             android:title="SETTINGS" />

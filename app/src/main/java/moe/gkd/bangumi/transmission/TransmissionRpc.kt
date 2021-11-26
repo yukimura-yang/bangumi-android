@@ -4,8 +4,11 @@ import moe.gkd.bangumi.MainApplication
 import moe.gkd.bangumi.TRANSMISSION_SAVE_DIR
 import moe.gkd.bangumi.TRANSMISSION_SESSION_ID
 import moe.gkd.bangumi.transmission.request.AddTorrentReqBody
+import moe.gkd.bangumi.transmission.request.AddTrackerReqBody
+import moe.gkd.bangumi.transmission.request.args.AddTrackerReqArgs
 import moe.gkd.bangumi.transmission.response.ResponseBody
 import moe.gkd.bangumi.transmission.response.args.AddTorrentRespArgs
+import moe.gkd.bangumi.transmission.response.args.AddTrackerRespArgs
 import moe.gkd.bangumi.transmission.response.args.GetSessionRespArgs
 import retrofit2.HttpException
 
@@ -25,6 +28,16 @@ object TransmissionRpc {
             MainApplication.INSTANCE.hashMap[TRANSMISSION_SESSION_ID] = sessionId
             return getSession(i + 1)
         }
+    }
+
+    suspend fun addTracker(id: Long): ResponseBody<AddTrackerRespArgs> {
+        return apiService.addTracker(
+            AddTrackerReqBody(
+                AddTrackerReqArgs(
+                    ids = arrayListOf(id)
+                )
+            )
+        )
     }
 
     /**

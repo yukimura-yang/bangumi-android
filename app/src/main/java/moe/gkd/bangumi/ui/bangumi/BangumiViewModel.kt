@@ -30,12 +30,13 @@ class BangumiViewModel(private val id: String) : BaseViewModel() {
         viewModelScope.launch {
             try {
                 withContext(Dispatchers.IO) {
-                    TransmissionRpc.addTorrentMagnet(
+                    val resp = TransmissionRpc.addTorrentMagnet(
                         torrent.magnet,
                         bangumi.value!!.subscription.title
                     )
                     val newTorrent = torrent.copy(downloaded = true)
                     AppDatabase.getInstance().bangumiDao().update(newTorrent)
+                    TransmissionRpc.addTracker(resp.arguments.torrentAdded.id)
                 }
             } catch (e: HttpException) {
                 e.printStackTrace()
