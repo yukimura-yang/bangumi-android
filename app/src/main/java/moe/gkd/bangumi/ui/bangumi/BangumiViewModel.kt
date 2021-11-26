@@ -36,7 +36,12 @@ class BangumiViewModel(private val id: String) : BaseViewModel() {
                     )
                     val newTorrent = torrent.copy(downloaded = true)
                     AppDatabase.getInstance().bangumiDao().update(newTorrent)
-                    TransmissionRpc.addTracker(resp.arguments.torrentAdded.id)
+                    if (resp.arguments.torrentAdded != null) {
+                        TransmissionRpc.addTracker(resp.arguments.torrentAdded.id)
+                    } else if(resp.arguments.torrentDuplicate != null) {
+                        TransmissionRpc.addTracker(resp.arguments.torrentDuplicate.id)
+                    }
+                    return@withContext
                 }
             } catch (e: HttpException) {
                 e.printStackTrace()

@@ -5,5 +5,7 @@ import moe.gkd.bangumi.transmission.entity.TorrentAdded
 
 class AddTorrentRespArgs(
     @SerializedName("torrent-added")
-    val torrentAdded: TorrentAdded
+    val torrentAdded: TorrentAdded?,
+    @SerializedName("torrent-duplicate")
+    val torrentDuplicate: TorrentAdded?
 )
