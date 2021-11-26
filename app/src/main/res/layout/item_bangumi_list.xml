@@ -52,7 +52,7 @@
                 android:orientation="horizontal">
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    setImageUrl='@{host+data.teamIcon}'
+                    setAvatarUrl='@{host+data.teamIcon}'
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     app:civ_border_color="#FF9800"

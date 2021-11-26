@@ -3,11 +3,9 @@
 
     <data>
 
-        <import type="androidx.databinding.ObservableBoolean" />
-
         <variable
-            name="isRefreshing"
-            type="ObservableBoolean" />
+            name="viewModel"
+            type="moe.gkd.bangumi.ui.bangumi.BangumiViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,7 +16,7 @@
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/refreshLayout"
-            isRefreshing="@{isRefreshing}"
+            isRefreshing="@{viewModel.loadState.loading}"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

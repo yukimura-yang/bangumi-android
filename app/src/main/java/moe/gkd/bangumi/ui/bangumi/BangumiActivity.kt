@@ -1,8 +1,10 @@
 package moe.gkd.bangumi.ui.bangumi
 
+import android.content.DialogInterface
+import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
-import androidx.databinding.ObservableBoolean
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,13 +32,13 @@ class BangumiActivity : BaseActivity<ActivityBangumiBinding>(R.layout.activity_b
             }
         }
     }
-    private val isRefreshing = ObservableBoolean(false)
     private val adapter = BangumiListAdapter()
 
     override fun initViews() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         title = intent.getStringExtra(BANGUMI_TITLE)
-        binding.isRefreshing = isRefreshing
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
         binding.refreshLayout.setOnRefreshListener(this)
         binding.recyclerView.also { recyclerView ->
             recyclerView.adapter = adapter
@@ -52,7 +54,6 @@ class BangumiActivity : BaseActivity<ActivityBangumiBinding>(R.layout.activity_b
 
     override fun initViewModel() {
         viewModel.loadState.observe(this) {
-            isRefreshing.set(it.loading)
             if (it.loading) {
                 Snackbar.make(binding.root, "正在更新，请稍候。", LENGTH_INDEFINITE).show()
             } else {
@@ -64,6 +65,9 @@ class BangumiActivity : BaseActivity<ActivityBangumiBinding>(R.layout.activity_b
             }
         }
         viewModel.bangumi.observe(this) {
+            if (it == null) {
+                finish()
+            }
             val list: List<TorrentEntity> = it?.torrents ?: arrayListOf()
             val newList = list.sortedByDescending { it.getTimestamp() }
             val oldList = adapter.currentList
@@ -77,12 +81,35 @@ class BangumiActivity : BaseActivity<ActivityBangumiBinding>(R.layout.activity_b
                 viewModel.updateSubscribe()
             }
         }
+        viewModel.toast.observe(this) {
+            Snackbar.make(binding.root, it, LENGTH_SHORT).show()
+        }
+    }
+
+    private val unSubscribeAlertDialog by lazy {
+        AlertDialog.Builder(this)
+            .setTitle("确定要取消订阅吗")
+            .setPositiveButton(
+                "确定"
+            ) { dialog, _ ->
+                viewModel.unSubscribe()
+                dialog.dismiss()
+            }
+            .setNegativeButton("取消", null)
+            .create()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.bangumi_menu_unsubscribe, menu)
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
             onBackPressed()
             return false
+        } else if (item.itemId == R.id.unSubscribe) {
+            unSubscribeAlertDialog.show()
         }
         return super.onOptionsItemSelected(item)
     }

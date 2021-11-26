@@ -4,20 +4,28 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../../layout/custom_preview.xml" value="0.5287179487179487" />
+        <entry key="app/src/main/res/drawable/circle_shape.xml" value="0.5297435897435897" />
         <entry key="app/src/main/res/drawable/ic_baseline_navigate_next_24.xml" value="0.5297435897435897" />
         <entry key="app/src/main/res/layout/activity_add_subscription.xml" value="0.521875" />
         <entry key="app/src/main/res/layout/activity_bangumi.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.45" />
         <entry key="app/src/main/res/layout/dialog_edit_text.xml" value="0.521875" />
+        <entry key="app/src/main/res/layout/fragment_feed.xml" value="0.521875" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.5018518518518519" />
         <entry key="app/src/main/res/layout/fragment_subscription_list.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_tag_search.xml" value="0.521875" />
         <entry key="app/src/main/res/layout/item_bangumi_list.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_subscription_list.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/item_torrent_search.xml" value="0.521875" />
         <entry key="app/src/main/res/layout/nav_header_drawer_layout.xml" value="0.5018518518518519" />
+        <entry key="app/src/main/res/layout/sample_search_chips.xml" value="0.521875" />
         <entry key="app/src/main/res/layout/spacing.xml" value="0.309375" />
         <entry key="app/src/main/res/layout/view_settings_switch.xml" value="0.521875" />
         <entry key="app/src/main/res/layout/view_settings_text.xml" value="0.521875" />
         <entry key="app/src/main/res/menu/bangumi_menu_add.xml" value="0.2989583333333333" />
+        <entry key="app/src/main/res/menu/bangumi_menu_del.xml" value="0.521875" />
+        <entry key="app/src/main/res/menu/bangumi_menu_subscribe.xml" value="1.9071428571428573" />
+        <entry key="app/src/main/res/menu/bangumi_menu_unsubscribe.xml" value="0.521875" />
         <entry key="app/src/main/res/menu/nav_menu_drawer.xml" value="0.521875" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.5297435897435897" />
         <entry key="app/src/main/res/xml/network_security_config.xml" value="0.521875" />

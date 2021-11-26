@@ -5,7 +5,7 @@ import org.simpleframework.xml.Root
 
 @Root(name = "channel", strict = false)
 data class BangumiChannel constructor(
-    @field:ElementList(entry = "item", inline = true)
-    @param:ElementList(entry = "item", inline = true)
-    val items: List<BangumiItem>
+    @field:ElementList(entry = "item", inline = true, required = false)
+    @param:ElementList(entry = "item", inline = true, required = false)
+    val items: List<BangumiItem> = arrayListOf()
 )

@@ -39,8 +39,14 @@ interface BangumiDao {
     fun insertAllTorrents(torrents: List<TorrentEntity>)
 
     @Delete
-    fun delete(subscription: SubscriptionEntity)
+    fun delete(vararg subscription: SubscriptionEntity)
 
     @Delete
-    fun delete(torrent: TorrentEntity)
+    fun deleteSubscription(subscriptions: List<SubscriptionEntity>)
+
+    @Delete
+    fun delete(vararg torrent: TorrentEntity)
+
+    @Delete
+    fun deleteTorrent(torrents: List<TorrentEntity>)
 }

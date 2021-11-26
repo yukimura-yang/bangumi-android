@@ -8,7 +8,6 @@ import androidx.viewbinding.ViewBinding
 
 abstract class BaseActivity<B : ViewBinding>(@LayoutRes val layoutId: Int) : AppCompatActivity() {
     protected lateinit var binding: B
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setBinding(layoutId)

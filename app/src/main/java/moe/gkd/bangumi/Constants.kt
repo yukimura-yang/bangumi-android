@@ -1,8 +1,10 @@
 package moe.gkd.bangumi
 
 import java.time.Instant
+import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 const val BANGUMI_ID = "bangumiid"
 const val BANGUMI_TITLE = "bangumititle"
@@ -37,6 +39,23 @@ fun utc2Local(utcTime: String): String {
 
 fun utc2Timestamp(utcTime: String): Long {
     return Instant.parse(utcTime).toEpochMilli()
+}
+
+fun gmt2utc(gmtTime: String): String {
+    val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern(
+        "E, dd MMM yyyy HH:mm:ss zzz",
+        Locale.US
+    )
+    val parse = LocalDateTime.parse(gmtTime, formatter)
+    val timestamp =
+        LocalDateTime.from(parse).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+    return timestamp2utc(timestamp)
+}
+
+fun timestamp2utc(timestamp: Long): String {
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    val str = formatter.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault()))
+    return str
 }
 
 /**

@@ -1,10 +1,7 @@
 package moe.gkd.bangumi.ui.main.subscriptionlist
 
 import android.content.Intent
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
@@ -13,6 +10,7 @@ import moe.gkd.bangumi.BANGUMI_TITLE
 import moe.gkd.bangumi.R
 import moe.gkd.bangumi.databinding.FragmentSubscriptionListBinding
 import moe.gkd.bangumi.ui.BaseFragment
+import moe.gkd.bangumi.ui.addsubscription.AddSubscriptionActivity
 import moe.gkd.bangumi.ui.bangumi.BangumiActivity
 
 class SubscriptionListFragment : BaseFragment<FragmentSubscriptionListBinding>() {
@@ -46,9 +44,16 @@ class SubscriptionListFragment : BaseFragment<FragmentSubscriptionListBinding>()
         viewModel.bangumis.observe(this) {
             val newList = it.sortedByDescending { it.torrents.firstOrNull()?.getTimestamp() }
             adapter.submitList(newList)
-            //初始化
-            if (it.isEmpty()) viewModel.initBangumis()
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.add) {
+            val intent = Intent(requireActivity(), AddSubscriptionActivity::class.java)
+            startActivity(intent)
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
