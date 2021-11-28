@@ -44,7 +44,8 @@
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginRight="24dp"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginBottom="12dp"
+                android:animateLayoutChanges="true" />
 
             <View
                 android:layout_width="match_parent"
@@ -75,7 +76,8 @@
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginRight="24dp"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginBottom="12dp"
+                android:animateLayoutChanges="true" />
 
             <View
                 android:layout_width="match_parent"
@@ -106,7 +108,8 @@
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginRight="24dp"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginBottom="12dp"
+                android:animateLayoutChanges="true" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>
