@@ -10,6 +10,7 @@ import moe.gkd.bangumi.data.entity.SubscriptionEntity
 import moe.gkd.bangumi.data.entity.TorrentEntity
 import moe.gkd.bangumi.data.request.SearchTagsRequest
 import moe.gkd.bangumi.data.response.TorrentTag
+import moe.gkd.bangumi.data.response.TorrentTeam
 import moe.gkd.bangumi.gmt2utc
 import moe.gkd.bangumi.http.BangumiApiService
 import moe.gkd.bangumi.http.RetrofitFactory
@@ -115,8 +116,7 @@ class AddSubscriptionViewModel : BaseViewModel() {
                             size = "",
                             publishTime = gmt2utc(item.pubDate),
                             tags = arrayListOf(),
-                            team = "",
-                            teamIcon = "",
+                            team = TorrentTeam(UUID.randomUUID().toString(), "NULL", "", ""),
                             magnet = "",
                             id = item.link.replace(
                                 "${BANGUMI_MOE_HOST_URL}torrent/",

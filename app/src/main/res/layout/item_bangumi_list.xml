@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="data"
             type="moe.gkd.bangumi.data.entity.TorrentEntity" />
@@ -52,7 +54,7 @@
                 android:orientation="horizontal">
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    setAvatarUrl='@{host+data.teamIcon}'
+                    setAvatarUrl='@{host+data.team.icon}'
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     app:civ_border_color="#FF9800"
@@ -63,7 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6dp"
-                    android:text='@{"@["+data.team+"]"}'
+                    android:text='@{"@["+data.team.name+"]"}'
                     android:textColor="#FFC107"
                     android:textSize="12sp"
                     tools:text="\@[Lilith-Raws]" />
@@ -98,12 +100,28 @@
                 android:layout_marginBottom="6dp"
                 android:background="#eeeeee" />
 
-            <Button
-                android:id="@+id/button"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text='@{buttonText}'
-                tools:text="重新下载" />
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/refresh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="刷新" />
+
+                <Button
+                    android:id="@+id/download"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:text='@{buttonText}'
+                    tools:text="重新下载" />
+
+            </LinearLayout>
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>

@@ -12,4 +12,8 @@ data class BangumiEntity(
         entityColumn = "parentId"
     )
     val torrents: List<TorrentEntity>
-)
+) {
+    fun hasUpdate(): Boolean {
+        return subscription.feedSize > torrents.size
+    }
+}

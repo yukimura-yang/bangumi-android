@@ -43,7 +43,11 @@ object TransmissionRpc {
     /**
      * 添加下载
      */
-    suspend fun addTorrentMagnet(magnet: String, name: String): ResponseBody<AddTorrentRespArgs> {
+    suspend fun addTorrentMagnet(
+        magnet: String,
+        name: String,
+        i: Int = 0
+    ): ResponseBody<AddTorrentRespArgs> {
         val path = MainApplication.INSTANCE.hashMap[TRANSMISSION_SAVE_DIR].toString().let {
             if (it.endsWith("/")) {
                 it
@@ -51,11 +55,19 @@ object TransmissionRpc {
                 "$it/"
             }
         }
-        return apiService.addTorrent(
-            AddTorrentReqBody(
-                magnet = magnet,
-                dir = "${path}${name}"
+        try {
+            return apiService.addTorrent(
+                AddTorrentReqBody(
+                    magnet = magnet,
+                    dir = "${path}${name}"
+                )
             )
-        )
+        } catch (e: HttpException) {
+            if (i >= 3) {
+                throw e
+            }
+            getSession()
+            return addTorrentMagnet(magnet, name, i + 1)
+        }
     }
 }

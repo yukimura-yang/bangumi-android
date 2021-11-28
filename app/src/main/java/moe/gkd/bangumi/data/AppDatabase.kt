@@ -4,6 +4,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import moe.gkd.bangumi.MainApplication
 import moe.gkd.bangumi.data.dao.BangumiDao
 import moe.gkd.bangumi.data.entity.SubscriptionEntity
@@ -11,7 +13,7 @@ import moe.gkd.bangumi.data.entity.TorrentEntity
 
 @Database(
     entities = [SubscriptionEntity::class, TorrentEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -28,9 +30,18 @@ abstract class AppDatabase : RoomDatabase() {
                         MainApplication.INSTANCE.applicationContext,
                         AppDatabase::class.java,
                         DB_NAME
-                    ).build()
+                    )
+                        .addMigrations(MIGRATION_1_2)
+                        .build()
                 }
                 return INSTANCE!!
+            }
+        }
+
+        private val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE torrents ADD COLUMN transmissionId INTEGER")
+                database.execSQL("ALTER TABLE subscriptions ADD COLUMN feedSize INTEGER NOT NULL  DEFAULT 0")
             }
         }
 

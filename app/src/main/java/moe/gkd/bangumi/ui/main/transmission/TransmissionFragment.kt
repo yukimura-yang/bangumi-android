@@ -16,7 +16,6 @@ import okhttp3.HttpUrl
 class TransmissionFragment : BaseFragment<FragmentTransmissionBinding>() {
     private val TAG = TransmissionFragment::class.simpleName
     override fun initViews() {
-        Log.i(TAG, "initViews: 初始化")
         binding.webView.also { webView ->
             webView.loadUrl(
                 getTransmissionUrl()

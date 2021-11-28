@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/forcedRefresh"
+        android:title="强制刷新" />
+    <item
+        android:id="@+id/allDownload"
+        android:title="全部下载" />
     <item
         android:id="@+id/unSubscribe"
-        android:title="取消订阅"
-        app:showAsAction="always" />
+        android:title="取消订阅" />
 </menu>

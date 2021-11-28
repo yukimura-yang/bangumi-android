@@ -60,6 +60,7 @@ class SubscriptionListAdapter :
                 binding.lastTitle = "NULL"
                 binding.updateDate = "NULL"
             }
+            binding.hasUpdate = item.hasUpdate()
         }
         holder.itemView.setOnClickListener {
             listener?.onItemClicked(item)

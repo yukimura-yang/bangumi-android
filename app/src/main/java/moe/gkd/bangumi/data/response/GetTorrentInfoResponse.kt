@@ -21,7 +21,7 @@ data class GetTorrentInfoResponse(
     @SerializedName("tag_ids")
     val tagIds: List<String>,
     @SerializedName("team_id")
-    val teamId: String,
+    val teamId: String?,
     val title: String,
     @SerializedName("uploader_id")
     val uploaderId: String,

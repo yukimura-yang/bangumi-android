@@ -41,7 +41,7 @@ class BangumiListAdapter : ListAdapter<TorrentEntity, BaseViewHolder<ItemBangumi
         val item = getItem(position)
         holder.binding.also { binding ->
             binding.data = item
-            binding.buttonText = if (item.downloaded) {
+            binding.buttonText = if (item.transmissionId != null) {
                 "重新下载 (${item.size})"
             } else {
                 "下载 (${item.size})"
@@ -49,16 +49,27 @@ class BangumiListAdapter : ListAdapter<TorrentEntity, BaseViewHolder<ItemBangumi
             binding.chipGroup.removeAllViews()
             for (tag in item.tags) {
                 val chip = Chip(holder.itemView.context)
-                chip.text = tag
+                chip.text = tag.getRecommendName()
                 binding.chipGroup.addView(chip)
             }
-            binding.button.setOnClickListener { listener?.onItemClicked(item) }
+            binding.download.setOnClickListener { downloadListener?.onItemClicked(item) }
+            binding.refresh.setOnClickListener { refreshListener?.onItemClicked(item) }
         }
     }
 
-    private var listener: OnItemClickedListener<TorrentEntity>? = null
-    fun setOnItemClickedListener(listener: (TorrentEntity) -> Unit) {
-        this.listener = object : OnItemClickedListener<TorrentEntity> {
+    private var downloadListener: OnItemClickedListener<TorrentEntity>? = null
+
+    fun setOnDownloadClickedListener(listener: (TorrentEntity) -> Unit) {
+        this.downloadListener = object : OnItemClickedListener<TorrentEntity> {
+            override fun onItemClicked(item: TorrentEntity) {
+                listener.invoke(item)
+            }
+        }
+    }
+
+    private var refreshListener: OnItemClickedListener<TorrentEntity>? = null
+    fun setOnRefreshClickedListener(listener: (TorrentEntity) -> Unit) {
+        this.refreshListener = object : OnItemClickedListener<TorrentEntity> {
             override fun onItemClicked(item: TorrentEntity) {
                 listener.invoke(item)
             }

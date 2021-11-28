@@ -1,6 +1,5 @@
 package moe.gkd.bangumi.ui.bangumi
 
-import android.content.DialogInterface
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -27,6 +26,7 @@ class BangumiActivity : BaseActivity<ActivityBangumiBinding>(R.layout.activity_b
 
     private val viewModel: BangumiViewModel by viewModels {
         object : ViewModelProvider.Factory {
+            @SuppressWarnings("UNCHECKED_CAST")
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return BangumiViewModel(intent.getStringExtra(BANGUMI_ID)!!) as T
             }
@@ -43,11 +43,14 @@ class BangumiActivity : BaseActivity<ActivityBangumiBinding>(R.layout.activity_b
         binding.recyclerView.also { recyclerView ->
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(this)
-            adapter.setOnItemClickedListener {
+            adapter.setOnDownloadClickedListener {
                 if (!transmissionReady()) {
                     Snackbar.make(binding.root, "Transmission没有准备好", LENGTH_SHORT).show()
                 }
                 viewModel.addTorrentMagnet(it)
+            }
+            adapter.setOnRefreshClickedListener {
+                viewModel.updateTorrent(it)
             }
         }
     }
@@ -67,8 +70,12 @@ class BangumiActivity : BaseActivity<ActivityBangumiBinding>(R.layout.activity_b
         viewModel.bangumi.observe(this) {
             if (it == null) {
                 finish()
+                return@observe
             }
-            val list: List<TorrentEntity> = it?.torrents ?: arrayListOf()
+            if (it.hasUpdate()) {
+                viewModel.updateSubscribe()
+            }
+            val list: List<TorrentEntity> = it.torrents
             val newList = list.sortedByDescending { it.getTimestamp() }
             val oldList = adapter.currentList
             val topUp = newList.size > oldList.size
@@ -105,13 +112,27 @@ class BangumiActivity : BaseActivity<ActivityBangumiBinding>(R.layout.activity_b
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            onBackPressed()
-            return false
-        } else if (item.itemId == R.id.unSubscribe) {
-            unSubscribeAlertDialog.show()
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                false
+            }
+            R.id.unSubscribe -> {
+                unSubscribeAlertDialog.show()
+                false
+            }
+            R.id.forcedRefresh -> {
+                viewModel.updateSubscribeForced()
+                false
+            }
+            R.id.allDownload -> {
+                viewModel.downloadAll()
+                false
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
         }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onRefresh() {

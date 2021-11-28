@@ -42,7 +42,15 @@ class SubscriptionListFragment : BaseFragment<FragmentSubscriptionListBinding>()
 
     override fun initViewModel() {
         viewModel.bangumis.observe(this) {
-            val newList = it.sortedByDescending { it.torrents.firstOrNull()?.getTimestamp() }
+            var newList = it.sortedByDescending {
+                it.torrents.firstOrNull()?.getTimestamp()
+            }
+            newList = newList.sortedByDescending {
+                it.hasUpdate()
+            }
+            if (adapter.currentList.size != newList.size) {
+                viewModel.checkSubscription()
+            }
             adapter.submitList(newList)
         }
     }
