@@ -1,5 +1,7 @@
 package moe.gkd.bangumi
 
+import android.graphics.Color
+import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -75,6 +77,30 @@ fun timestamp2utc(timestamp: Long): String {
         )
     )
     return str
+}
+
+fun dayOfWeek2JpWeek(dayOfWeek: DayOfWeek): String {
+    return when (dayOfWeek) {
+        DayOfWeek.MONDAY -> "周一（月）"
+        DayOfWeek.TUESDAY -> "周二（火）"
+        DayOfWeek.WEDNESDAY -> "周三（水）"
+        DayOfWeek.THURSDAY -> "周四（木）"
+        DayOfWeek.FRIDAY -> "周五（金）"
+        DayOfWeek.SATURDAY -> "周六（土）"
+        DayOfWeek.SUNDAY -> "周日（日）"
+    }
+}
+
+fun dayOfWeekColor(dayOfWeek: DayOfWeek): Int {
+    return when (dayOfWeek) {
+        DayOfWeek.MONDAY -> Color.parseColor("#FFD700")
+        DayOfWeek.TUESDAY -> Color.parseColor("#FF69B4")
+        DayOfWeek.WEDNESDAY -> Color.parseColor("#008000")
+        DayOfWeek.THURSDAY -> Color.parseColor("#FF7F00")
+        DayOfWeek.FRIDAY -> Color.parseColor("#4169E1")
+        DayOfWeek.SATURDAY -> Color.parseColor("#8B00FF")
+        DayOfWeek.SUNDAY -> Color.parseColor("#E60000")
+    }
 }
 
 /**

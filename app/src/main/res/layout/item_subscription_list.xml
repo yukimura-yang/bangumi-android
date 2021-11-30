@@ -26,9 +26,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="3dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginRight="3dp"
+        android:layout_margin="3dp"
         android:foreground="?android:attr/selectableItemBackgroundBorderless">
 
         <LinearLayout
@@ -62,6 +60,11 @@
                 android:text="@{lastTitle}"
                 android:textSize="12sp"
                 tools:text="[Lilith-Raws] 無職轉生，到了異世界就拿出真本事 / Mushoku Tensei - 18 [Baha][WEB-DL][1080p][AVC AAC][CHT][MP4]" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
             <TextView
                 android:layout_width="match_parent"

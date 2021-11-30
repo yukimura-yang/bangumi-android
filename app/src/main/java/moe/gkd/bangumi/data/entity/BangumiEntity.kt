@@ -1,7 +1,6 @@
 package moe.gkd.bangumi.data.entity
 
 import androidx.room.Embedded
-import androidx.room.Fts4
 import androidx.room.Relation
 
 data class BangumiEntity(
@@ -12,7 +11,7 @@ data class BangumiEntity(
         entityColumn = "parentId"
     )
     val torrents: List<TorrentEntity>
-) {
+) : BangumiListInterface {
     fun hasUpdate(): Boolean {
         return subscription.feedSize > torrents.size
     }

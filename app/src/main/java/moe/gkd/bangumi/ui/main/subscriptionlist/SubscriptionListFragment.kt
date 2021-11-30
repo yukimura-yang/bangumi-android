@@ -3,15 +3,20 @@ package moe.gkd.bangumi.ui.main.subscriptionlist
 import android.content.Intent
 import android.view.*
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
 import moe.gkd.bangumi.BANGUMI_ID
 import moe.gkd.bangumi.BANGUMI_TITLE
 import moe.gkd.bangumi.R
+import moe.gkd.bangumi.data.entity.BangumiListGroup
 import moe.gkd.bangumi.databinding.FragmentSubscriptionListBinding
 import moe.gkd.bangumi.ui.BaseFragment
 import moe.gkd.bangumi.ui.addsubscription.AddSubscriptionActivity
 import moe.gkd.bangumi.ui.bangumi.BangumiActivity
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 
 class SubscriptionListFragment : BaseFragment<FragmentSubscriptionListBinding>() {
     val TAG = SubscriptionListFragment::class.simpleName
@@ -36,19 +41,37 @@ class SubscriptionListFragment : BaseFragment<FragmentSubscriptionListBinding>()
         }
         binding.recyclerView.also { recyclerView ->
             recyclerView.adapter = adapter
-            recyclerView.layoutManager = StaggeredGridLayoutManager(2, VERTICAL)
+            val manager = GridLayoutManager(context, 2)
+            manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return if (adapter.getItemViewType(position) == 0) {
+                        1
+                    } else {
+                        2
+                    }
+                }
+            }
+            recyclerView.layoutManager = manager
         }
     }
 
     override fun initViewModel() {
         viewModel.bangumis.observe(this) {
-            val newList = it.sortedByDescending {
-                it.subscription.lastUpdateTime
-            }
+            val scroll = adapter.currentList.size == 0
+            val newList = viewModel.formatList(it)
             if (adapter.currentList.size != newList.size) {
                 viewModel.checkSubscription()
             }
-            adapter.submitList(newList)
+            adapter.submitList(newList) {
+                if (!scroll) return@submitList
+                val item =
+                    newList.find {
+                        it is BangumiListGroup && it.week == adapter.dayOfWeek
+                    }
+                if (item != null) {
+                    binding.recyclerView.layoutManager?.scrollToPosition(newList.indexOf(item))
+                }
+            }
         }
     }
 

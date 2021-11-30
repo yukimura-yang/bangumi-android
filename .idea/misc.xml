@@ -15,6 +15,7 @@
         <entry key="app/src/main/res/layout/fragment_subscription_list.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_tag_search.xml" value="0.521875" />
         <entry key="app/src/main/res/layout/fragment_transmission.xml" value="0.521875" />
+        <entry key="app/src/main/res/layout/group_subscription_list.xml" value="0.521875" />
         <entry key="app/src/main/res/layout/item_bangumi_list.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_subscription_list.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_torrent_search.xml" value="0.521875" />
