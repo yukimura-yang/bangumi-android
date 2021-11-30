@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import moe.gkd.bangumi.data.entity.BangumiEntity
 import moe.gkd.bangumi.databinding.ItemSubscriptionListBinding
+import moe.gkd.bangumi.timestamp2Local
 import moe.gkd.bangumi.ui.widget.BaseViewHolder
 import moe.gkd.bangumi.ui.widget.OnItemClickedListener
 
@@ -55,11 +56,10 @@ class SubscriptionListAdapter :
             binding.title = item.subscription.title
             if (item.torrents.isNotEmpty()) {
                 binding.lastTitle = item.torrents.first().title
-                binding.updateDate = item.torrents.first().getFormatTime()
             } else {
                 binding.lastTitle = "NULL"
-                binding.updateDate = "NULL"
             }
+            binding.updateDate = timestamp2Local(item.subscription.lastUpdateTime)
             binding.hasUpdate = item.hasUpdate()
         }
         holder.itemView.setOnClickListener {

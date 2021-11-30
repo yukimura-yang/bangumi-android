@@ -11,7 +11,7 @@ import moe.gkd.bangumi.data.entity.TorrentEntity
 import moe.gkd.bangumi.data.request.SearchTagsRequest
 import moe.gkd.bangumi.data.response.TorrentTag
 import moe.gkd.bangumi.data.response.TorrentTeam
-import moe.gkd.bangumi.gmt2utc
+import moe.gkd.bangumi.gtm2Timestamp
 import moe.gkd.bangumi.http.BangumiApiService
 import moe.gkd.bangumi.http.RetrofitFactory
 import moe.gkd.bangumi.ui.BaseViewModel
@@ -114,7 +114,7 @@ class AddSubscriptionViewModel : BaseViewModel() {
                             parentId = "",
                             title = item.title,
                             size = "",
-                            publishTime = gmt2utc(item.pubDate),
+                            publishTimestamp = gtm2Timestamp(item.pubDate),
                             tags = arrayListOf(),
                             team = TorrentTeam(UUID.randomUUID().toString(), "NULL", "", ""),
                             magnet = "",
@@ -151,10 +151,15 @@ class AddSubscriptionViewModel : BaseViewModel() {
                     }
                     sb.toString()
                 } ?: ""
+                val lastUpdateTime = bangumi.value?.let {
+                    if (it.isEmpty()) return@let 0
+                    it.first().publishTimestamp ?: 0
+                } ?: 0
                 val subscription = SubscriptionEntity(
                     UUID.randomUUID().toString(),
                     name,
-                    "${BANGUMI_MOE_HOST_URL}rss/tags/${tagids}"
+                    "${BANGUMI_MOE_HOST_URL}rss/tags/${tagids}",
+                    lastUpdateTime = lastUpdateTime
                 )
                 withContext(Dispatchers.IO) {
                     AppDatabase.getInstance().bangumiDao().insertAll(subscription)

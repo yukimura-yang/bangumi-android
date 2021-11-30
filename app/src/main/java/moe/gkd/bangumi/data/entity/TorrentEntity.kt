@@ -1,10 +1,11 @@
 package moe.gkd.bangumi.data.entity
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import moe.gkd.bangumi.data.response.TorrentTag
 import moe.gkd.bangumi.data.response.TorrentTeam
-import moe.gkd.bangumi.utc2Local
+import moe.gkd.bangumi.timestamp2Local
 import moe.gkd.bangumi.utc2Timestamp
 
 @Entity(tableName = "torrents")
@@ -18,7 +19,10 @@ data class TorrentEntity(
     //文件大小
     val size: String,
     //上传时间
-    val publishTime: String,
+    @Deprecated("使用 publishTimestamp 代替", level = DeprecationLevel.ERROR)
+    val publishTime: String = "",
+    //上传时间
+    val publishTimestamp: Long = utc2Timestamp(publishTime),
     //标签
     val tags: List<TorrentTag>,
     //上传者
@@ -35,16 +39,12 @@ data class TorrentEntity(
     var downloaded: Boolean = false
 ) {
     fun getFormatTime(): String {
-        return utc2Local(publishTime)
-    }
-
-    fun getTimestamp(): Long {
-        return utc2Timestamp(publishTime)
+        return timestamp2Local(publishTimestamp)
     }
 
     override fun equals(other: Any?): Boolean {
         if (other is TorrentEntity) {
-            return uid == other.uid && parentId == other.parentId && title == other.title && size == other.size && publishTime == other.publishTime && tags.size == other.tags.size &&
+            return uid == other.uid && parentId == other.parentId && title == other.title && size == other.size && publishTimestamp == other.publishTimestamp && tags.size == other.tags.size &&
                     tags.containsAll(other.tags) && team == other.team && magnet == other.magnet && id == other.id && transmissionId == other.transmissionId
         } else {
             return false

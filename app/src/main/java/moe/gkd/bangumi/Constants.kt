@@ -34,6 +34,13 @@ fun utc2Local(utcTime: String): String {
         .format(formatter)
 }
 
+fun timestamp2Local(timestamp: Long): String {
+    val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm E")
+    return Instant.ofEpochMilli(timestamp)
+        .atZone(ZoneId.systemDefault())
+        .format(formatter)
+}
+
 fun utc2Timestamp(utcTime: String): Long {
     return Instant.parse(utcTime).toEpochMilli()
 }
@@ -49,9 +56,24 @@ fun gmt2utc(gmtTime: String): String {
     return timestamp2utc(timestamp)
 }
 
+fun gtm2Timestamp(gmtTime: String): Long {
+    if (gmtTime.isEmpty()) return 0
+    val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern(
+        "E, dd MMM yyyy HH:mm:ss zzz",
+        Locale.US
+    )
+    val parse = LocalDateTime.parse(gmtTime, formatter)
+    return LocalDateTime.from(parse).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+}
+
 fun timestamp2utc(timestamp: Long): String {
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    val str = formatter.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault()))
+    val str = formatter.format(
+        LocalDateTime.ofInstant(
+            Instant.ofEpochMilli(timestamp),
+            ZoneId.systemDefault()
+        )
+    )
     return str
 }
 

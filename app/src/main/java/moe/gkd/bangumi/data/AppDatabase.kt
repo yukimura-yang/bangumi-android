@@ -13,7 +13,7 @@ import moe.gkd.bangumi.data.entity.TorrentEntity
 
 @Database(
     entities = [SubscriptionEntity::class, TorrentEntity::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -32,6 +32,7 @@ abstract class AppDatabase : RoomDatabase() {
                         DB_NAME
                     )
                         .addMigrations(MIGRATION_1_2)
+                        .addMigrations(MIGRATION_2_3)
                         .build()
                 }
                 return INSTANCE!!
@@ -41,7 +42,13 @@ abstract class AppDatabase : RoomDatabase() {
         private val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE torrents ADD COLUMN transmissionId INTEGER")
-                database.execSQL("ALTER TABLE subscriptions ADD COLUMN feedSize INTEGER NOT NULL  DEFAULT 0")
+                database.execSQL("ALTER TABLE subscriptions ADD COLUMN feedSize INTEGER NOT NULL DEFAULT 0")
+            }
+        }
+        private val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE torrents ADD COLUMN publishTimestamp INTEGER NOT NULL")
+                database.execSQL("ALTER TABLE subscriptions ADD COLUMN lastUpdateTime INTEGER NOT NULL DEFAULT 0")
             }
         }
 

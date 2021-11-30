@@ -76,7 +76,7 @@ class BangumiActivity : BaseActivity<ActivityBangumiBinding>(R.layout.activity_b
                 viewModel.updateSubscribe()
             }
             val list: List<TorrentEntity> = it.torrents
-            val newList = list.sortedByDescending { it.getTimestamp() }
+            val newList = list.sortedByDescending { it.publishTimestamp }
             val oldList = adapter.currentList
             val topUp = newList.size > oldList.size
             adapter.submitList(newList) {

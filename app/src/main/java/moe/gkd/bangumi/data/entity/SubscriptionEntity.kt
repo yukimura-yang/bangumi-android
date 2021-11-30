@@ -10,7 +10,8 @@ data class SubscriptionEntity(
     val id: String,
     val title: String,
     val feed: String,
-    var feedSize: Int = 0
+    var feedSize: Int = 0,
+    var lastUpdateTime: Long,
 ) {
     fun getFeedTags(): String {
         return feed.replace(

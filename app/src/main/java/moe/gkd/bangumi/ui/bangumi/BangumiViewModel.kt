@@ -17,6 +17,7 @@ import moe.gkd.bangumi.http.BangumiApiService
 import moe.gkd.bangumi.http.RetrofitFactory
 import moe.gkd.bangumi.transmission.TransmissionRpc
 import moe.gkd.bangumi.ui.BaseViewModel
+import moe.gkd.bangumi.utc2Timestamp
 import retrofit2.HttpException
 import java.util.*
 
@@ -106,7 +107,7 @@ class BangumiViewModel(private val id: String) : BaseViewModel() {
                         parentId = torrent.parentId,
                         title = resp.title,
                         size = resp.size,
-                        publishTime = resp.publishTime,
+                        publishTimestamp = utc2Timestamp(resp.publishTime),
                         tags = tags,
                         team = team,
                         magnet = resp.magnet,
@@ -199,7 +200,7 @@ class BangumiViewModel(private val id: String) : BaseViewModel() {
                             parentId = id,
                             title = torrent.title,
                             size = torrent.size,
-                            publishTime = torrent.publishTime,
+                            publishTimestamp = utc2Timestamp(torrent.publishTime),
                             team = currentTeam,
                             tags = currentTags,
                             magnet = torrent.magnet,
@@ -289,7 +290,7 @@ class BangumiViewModel(private val id: String) : BaseViewModel() {
                             parentId = id,
                             title = torrent.title,
                             size = torrent.size,
-                            publishTime = torrent.publishTime,
+                            publishTimestamp = utc2Timestamp(torrent.publishTime),
                             team = currentTeam,
                             tags = currentTags,
                             magnet = torrent.magnet,
