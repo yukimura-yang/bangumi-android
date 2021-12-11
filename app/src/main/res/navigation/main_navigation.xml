@@ -10,6 +10,9 @@
         android:id="@+id/nav_transmission"
         android:name="moe.gkd.bangumi.ui.main.transmission.TransmissionFragment" />
     <fragment
+        android:id="@+id/nav_webdav"
+        android:name="moe.gkd.bangumi.ui.main.webdav.WebdavFragment" />
+    <fragment
         android:id="@+id/nav_settings"
         android:name="moe.gkd.bangumi.ui.main.settings.SettingsFragment" />
     <fragment

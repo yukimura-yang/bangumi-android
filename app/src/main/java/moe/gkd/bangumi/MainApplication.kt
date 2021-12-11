@@ -32,5 +32,8 @@ class MainApplication : Application() {
         hashMap[TRANSMISSION_PASSWORD] = SharedPreferencesHelper.SP.transmissionPassword!!
         hashMap[TRANSMISSION_RPC] = SharedPreferencesHelper.SP.transmissionRpc!!
         hashMap[TRANSMISSION_SAVE_DIR] = SharedPreferencesHelper.SP.transmissionSaveDir!!
+        hashMap[WEBDAV_ADDRESS] = SharedPreferencesHelper.SP.webdavAddress!!
+        hashMap[WEBDAV_USERNAME] = SharedPreferencesHelper.SP.webdavUserName!!
+        hashMap[WEBDAV_PASSWORD] = SharedPreferencesHelper.SP.webdavPassword!!
     }
 }

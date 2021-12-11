@@ -14,7 +14,6 @@ import moe.gkd.bangumi.ui.BaseFragment
 import okhttp3.HttpUrl
 
 class TransmissionFragment : BaseFragment<FragmentTransmissionBinding>() {
-    private val TAG = TransmissionFragment::class.simpleName
     override fun initViews() {
         binding.webView.also { webView ->
             webView.loadUrl(

@@ -25,7 +25,9 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
         binding.transmissionPassword.setContent(MainApplication.INSTANCE.hashMap[TRANSMISSION_PASSWORD].toString())
         binding.transmissionRpc.setContent(MainApplication.INSTANCE.hashMap[TRANSMISSION_RPC].toString())
         binding.transmissionSaveDir.setContent(MainApplication.INSTANCE.hashMap[TRANSMISSION_SAVE_DIR].toString())
-
+        binding.webdavAddress.setContent(MainApplication.INSTANCE.hashMap[WEBDAV_ADDRESS].toString())
+        binding.webdavUsername.setContent(MainApplication.INSTANCE.hashMap[WEBDAV_USERNAME].toString())
+        binding.webdavPassword.setContent(MainApplication.INSTANCE.hashMap[WEBDAV_PASSWORD].toString())
 
         binding.bangumiCdn.setOnCheckedChangeListener { buttonView, isChecked ->
             MainApplication.INSTANCE.hashMap[USE_BANGUMI_MOE_CDN] = isChecked
@@ -58,6 +60,18 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
         binding.transmissionSaveDir.setInputListener { text ->
             MainApplication.INSTANCE.hashMap[TRANSMISSION_SAVE_DIR] = text
             SharedPreferencesHelper.SP.transmissionSaveDir = text
+        }
+        binding.webdavAddress.setInputListener { text ->
+            MainApplication.INSTANCE.hashMap[WEBDAV_ADDRESS] = text
+            SharedPreferencesHelper.SP.webdavAddress = text
+        }
+        binding.webdavUsername.setInputListener { text ->
+            MainApplication.INSTANCE.hashMap[WEBDAV_USERNAME] = text
+            SharedPreferencesHelper.SP.webdavUserName = text
+        }
+        binding.webdavPassword.setInputListener { text ->
+            MainApplication.INSTANCE.hashMap[WEBDAV_PASSWORD] = text
+            SharedPreferencesHelper.SP.webdavPassword = text
         }
         binding.checkRequest.setOnClickListener(this::onCheckTransmission)
     }

@@ -10,7 +10,6 @@ import moe.gkd.bangumi.ui.BaseFragment
 import moe.gkd.bangumi.ui.widget.TagChip
 
 class TagSearchFragment : BaseFragment<FragmentTagSearchBinding>() {
-    private val TAG = TagSearchFragment::class.simpleName
     private val viewModel: AddSubscriptionViewModel by activityViewModels()
 
     override fun initViews() {

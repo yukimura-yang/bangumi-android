@@ -17,7 +17,6 @@ import java.time.Instant
 import java.time.ZoneId
 
 class SubscriptionListViewModel : BaseViewModel() {
-    private val TAG = SubscriptionListViewModel::class.simpleName
     private val bangumiApi = RetrofitFactory.instance.getService(BangumiApiService::class.java)
     val bangumis = AppDatabase.getInstance().bangumiDao().getBangumis()
 

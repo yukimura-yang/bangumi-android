@@ -12,6 +12,10 @@
             android:icon="@drawable/ic_baseline_web_24"
             android:title="TRANSMISSION" />
         <item
+            android:id="@+id/files"
+            android:icon="@drawable/ic_baseline_video_library_24"
+            android:title="FILES" />
+        <item
             android:id="@+id/settings"
             android:icon="@drawable/ic_baseline_settings_24"
             android:title="SETTINGS" />

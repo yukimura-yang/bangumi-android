@@ -6,10 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import moe.gkd.bangumi.TAG
 
 abstract class BaseFragment<B : ViewBinding> : Fragment() {
     private var _binding: B? = null
-
+    protected val TAG = this.TAG()
     protected val binding get() = _binding!!
 
     override fun onCreateView(

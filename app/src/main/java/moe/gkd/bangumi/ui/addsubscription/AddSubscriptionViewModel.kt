@@ -19,7 +19,6 @@ import java.util.*
 import kotlin.collections.LinkedHashSet
 
 class AddSubscriptionViewModel : BaseViewModel() {
-    private val TAG = AddSubscriptionViewModel::class.simpleName
     private val bangumiApi = RetrofitFactory.instance.getService(BangumiApiService::class.java)
     val loadState = MutableLiveData<LoadStateEntity>()
 

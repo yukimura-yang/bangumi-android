@@ -10,7 +10,6 @@ import moe.gkd.bangumi.transmission.TransmissionRpc
 import moe.gkd.bangumi.ui.BaseViewModel
 
 class SettingsViewModel : BaseViewModel() {
-    private val TAG = SettingsViewModel::class.simpleName
 
     val checking = MutableLiveData(false)
     val toast = MutableLiveData<String>()

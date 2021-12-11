@@ -12,7 +12,6 @@ import moe.gkd.bangumi.ui.BaseFragment
 
 class FeedFragment : BaseFragment<FragmentFeedBinding>(), SwipeRefreshLayout.OnRefreshListener {
     private val viewModel: AddSubscriptionViewModel by activityViewModels()
-    private val TAG = FeedFragment::class.simpleName
     private val adapter = TorrentSearchAdapter()
 
     override fun initViews() {

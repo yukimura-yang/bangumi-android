@@ -1,6 +1,7 @@
 package moe.gkd.bangumi
 
 import android.graphics.Color
+import com.thegrizzlylabs.sardineandroid.DavResource
 import java.time.*
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -25,6 +26,9 @@ const val TRANSMISSION_RPC = "transmission_rpc"
 const val TRANSMISSION_SAVE_DIR = "transmission_save_dir"
 const val TRANSMISSION_SESSION_ID = "transmission_session_id"
 const val TRANSMISSION_AUTHORIZATION = "transmission_authorization"
+const val WEBDAV_ADDRESS = "webdav_address"
+const val WEBDAV_USERNAME = "webdav_username"
+const val WEBDAV_PASSWORD = "webdav_password"
 
 fun utc2Local(utcTime: String): String {
     val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm E")
@@ -110,4 +114,17 @@ fun transmissionReady(): Boolean {
     if (hashMap[TRANSMISSION_RPC].toString().isEmpty()) return false
     if (hashMap[TRANSMISSION_SAVE_DIR].toString().isEmpty()) return false
     return true
+}
+
+fun Any.TAG(): String {
+    return this::class.simpleName ?: ""
+}
+
+fun DavResource.isVideoFile(): Boolean {
+    if (this.isDirectory) return false
+    val name = this.name.lowercase()
+    if (name.endsWith(".mp4") || name.endsWith(".mkv")) {
+        return true
+    }
+    return false
 }

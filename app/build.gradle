@@ -105,4 +105,9 @@ dependencies {
     kapt("com.github.bumptech.glide:compiler:$glideVersion")
 
     implementation("androidx.security:security-crypto:1.0.0")
+    //webdav
+    implementation("com.github.thegrizzlylabs:sardine-android:0.8") {
+        exclude module: "simple-xml"
+        exclude module: "okhttp"
+    }
 }

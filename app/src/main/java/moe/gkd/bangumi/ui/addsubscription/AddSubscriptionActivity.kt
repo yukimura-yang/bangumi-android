@@ -14,7 +14,6 @@ import moe.gkd.bangumi.ui.BaseActivity
 class AddSubscriptionActivity :
     BaseActivity<ActivityAddSubscriptionBinding>(R.layout.activity_add_subscription) {
     private val viewModel: AddSubscriptionViewModel by viewModels()
-    private val TAG = AddSubscriptionActivity::class.simpleName
     private lateinit var mediator: TabLayoutMediator
 
     override fun initViews() {

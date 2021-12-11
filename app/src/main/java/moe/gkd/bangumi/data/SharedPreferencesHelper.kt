@@ -18,6 +18,9 @@ object SharedPreferencesHelper {
         var transmissionPassword by string("")
         var transmissionRpc by string("/transmission/rpc")
         var transmissionSaveDir by string("/volume2/public/Downloads")
+        var webdavAddress by string("")
+        var webdavUserName by string("")
+        var webdavPassword by string("")
     }
 
     abstract class Delegates {

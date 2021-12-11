@@ -22,7 +22,6 @@ import retrofit2.HttpException
 import java.util.*
 
 class BangumiViewModel(private val id: String) : BaseViewModel() {
-    private val TAG = BangumiViewModel::class.simpleName
     private val bangumiApi = RetrofitFactory.instance.getService(BangumiApiService::class.java)
     val loadState = MutableLiveData<LoadStateEntity>()
     val bangumi = AppDatabase.getInstance().bangumiDao().getBangumiById(id)

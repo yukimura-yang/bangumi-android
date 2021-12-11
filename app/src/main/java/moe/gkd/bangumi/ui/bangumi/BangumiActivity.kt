@@ -22,7 +22,6 @@ import moe.gkd.bangumi.ui.BaseActivity
 
 class BangumiActivity : BaseActivity<ActivityBangumiBinding>(R.layout.activity_bangumi),
     SwipeRefreshLayout.OnRefreshListener {
-    private val TAG = BangumiActivity::class.simpleName
 
     private val viewModel: BangumiViewModel by viewModels {
         object : ViewModelProvider.Factory {

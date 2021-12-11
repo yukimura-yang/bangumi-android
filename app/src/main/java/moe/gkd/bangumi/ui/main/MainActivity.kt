@@ -64,6 +64,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
             R.id.transmission -> {
                 switchFragment(R.id.nav_transmission)
             }
+            R.id.files -> {
+                switchFragment(R.id.nav_webdav)
+            }
             R.id.settings -> {
                 switchFragment(R.id.nav_settings)
             }
