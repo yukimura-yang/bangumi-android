@@ -128,7 +128,7 @@ class BangumiViewModel(private val id: String) : BaseViewModel() {
      * 更新订阅列表
      */
     fun updateSubscribe() {
-        updateSubscribeJob?.cancel()
+        if (updateSubscribeJob?.isActive == true) return
         updateSubscribeJob = viewModelScope.launch {
             try {
                 withContext(Dispatchers.IO) {

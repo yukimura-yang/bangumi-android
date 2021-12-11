@@ -1,6 +1,5 @@
 package moe.gkd.bangumi.ui.main.subscriptionlist
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -25,13 +24,7 @@ class SubscriptionListAdapter :
                 oldItem: BangumiListInterface,
                 newItem: BangumiListInterface
             ): Boolean {
-                if (oldItem is BangumiListGroup && newItem is BangumiListGroup) {
-                    return oldItem.week == newItem.week
-                } else if (oldItem is BangumiEntity && newItem is BangumiEntity) {
-                    return oldItem.torrents.first().uid == newItem.torrents.first().uid
-                } else {
-                    return false
-                }
+                return areContentsTheSame(oldItem, newItem)
             }
 
             override fun areContentsTheSame(
@@ -48,7 +41,7 @@ class SubscriptionListAdapter :
                     } else if (oldItem.subscription.lastUpdateTime != newItem.subscription.lastUpdateTime) {
                         return false
                     } else {
-                        return oldItem.torrents.first().uid == newItem.torrents.first().uid
+                        return (oldItem.torrents.first().uid == newItem.torrents.first().uid) && (oldItem.torrents.last().uid == newItem.torrents.last().uid)
                     }
                 } else {
                     return false

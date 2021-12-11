@@ -72,9 +72,6 @@ class BangumiActivity : BaseActivity<ActivityBangumiBinding>(R.layout.activity_b
                 finish()
                 return@observe
             }
-            if (it.hasUpdate()) {
-                viewModel.updateSubscribe()
-            }
             val list: List<TorrentEntity> = it.torrents
             val newList = list.sortedByDescending { it.publishTimestamp }
             val oldList = adapter.currentList
@@ -82,6 +79,9 @@ class BangumiActivity : BaseActivity<ActivityBangumiBinding>(R.layout.activity_b
             adapter.submitList(newList) {
                 if (topUp) {
                     binding.recyclerView.smoothScrollToPosition(0)
+                }
+                if (it.hasUpdate()) {
+                    viewModel.updateSubscribe()
                 }
             }
         }
