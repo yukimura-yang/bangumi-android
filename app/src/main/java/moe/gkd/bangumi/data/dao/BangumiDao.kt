@@ -38,6 +38,7 @@ interface BangumiDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllTorrents(torrents: List<TorrentEntity>)
 
+
     @Delete
     fun delete(vararg subscription: SubscriptionEntity)
 
@@ -46,6 +47,9 @@ interface BangumiDao {
 
     @Delete
     fun delete(vararg torrent: TorrentEntity)
+
+    @Query("DELETE FROM torrents WHERE parentId = :id")
+    fun clearTorrent(id: String)
 
     @Delete
     fun deleteTorrent(torrents: List<TorrentEntity>)

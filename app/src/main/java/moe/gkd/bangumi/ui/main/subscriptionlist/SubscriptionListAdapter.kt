@@ -28,7 +28,7 @@ class SubscriptionListAdapter :
                 if (oldItem is BangumiListGroup && newItem is BangumiListGroup) {
                     return oldItem.week == newItem.week
                 } else if (oldItem is BangumiEntity && newItem is BangumiEntity) {
-                    return oldItem.subscription.id == newItem.subscription.id
+                    return oldItem.torrents.first().uid == newItem.torrents.first().uid
                 } else {
                     return false
                 }

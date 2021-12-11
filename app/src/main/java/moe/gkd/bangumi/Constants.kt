@@ -1,10 +1,7 @@
 package moe.gkd.bangumi
 
 import android.graphics.Color
-import java.time.DayOfWeek
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
+import java.time.*
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -54,7 +51,7 @@ fun gmt2utc(gmtTime: String): String {
     )
     val parse = LocalDateTime.parse(gmtTime, formatter)
     val timestamp =
-        LocalDateTime.from(parse).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        LocalDateTime.from(parse).atZone(ZoneOffset.UTC).toInstant().toEpochMilli()
     return timestamp2utc(timestamp)
 }
 
@@ -65,7 +62,7 @@ fun gtm2Timestamp(gmtTime: String): Long {
         Locale.US
     )
     val parse = LocalDateTime.parse(gmtTime, formatter)
-    return LocalDateTime.from(parse).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+    return LocalDateTime.from(parse).atZone(ZoneOffset.UTC).toInstant().toEpochMilli()
 }
 
 fun timestamp2utc(timestamp: Long): String {

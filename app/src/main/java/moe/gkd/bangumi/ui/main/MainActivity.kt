@@ -24,7 +24,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
     }
 
     override fun initViewModel() {
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -67,6 +66,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
             }
             R.id.settings -> {
                 switchFragment(R.id.nav_settings)
+            }
+            R.id.about -> {
+                switchFragment(R.id.nav_about)
             }
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)

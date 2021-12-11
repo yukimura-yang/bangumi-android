@@ -84,9 +84,6 @@ class BangumiActivity : BaseActivity<ActivityBangumiBinding>(R.layout.activity_b
                     binding.recyclerView.smoothScrollToPosition(0)
                 }
             }
-            if (list.isEmpty()) {
-                viewModel.updateSubscribe()
-            }
         }
         viewModel.toast.observe(this) {
             Snackbar.make(binding.root, it, LENGTH_SHORT).show()

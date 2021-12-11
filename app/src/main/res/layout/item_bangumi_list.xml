@@ -59,7 +59,7 @@
                     android:layout_height="48dp"
                     app:civ_border_color="#FF9800"
                     app:civ_border_width="1dp"
-                    tools:src="@mipmap/waifu" />
+                    tools:src="@mipmap/ic_launcher" />
 
                 <TextView
                     android:layout_width="wrap_content"

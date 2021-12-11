@@ -45,13 +45,13 @@ class SubscriptionListViewModel : BaseViewModel() {
     }
 
     fun formatList(bangumis: List<BangumiEntity>): List<BangumiListInterface> {
-        val monday = arrayListOf<BangumiListInterface>()
-        val tuesday = arrayListOf<BangumiListInterface>()
-        val wednesday = arrayListOf<BangumiListInterface>()
-        val thursday = arrayListOf<BangumiListInterface>()
-        val friday = arrayListOf<BangumiListInterface>()
-        val saturday = arrayListOf<BangumiListInterface>()
-        val sunday = arrayListOf<BangumiListInterface>()
+        var monday: MutableList<BangumiListInterface> = arrayListOf()
+        var tuesday: MutableList<BangumiListInterface> = arrayListOf()
+        var wednesday: MutableList<BangumiListInterface> = arrayListOf()
+        var thursday: MutableList<BangumiListInterface> = arrayListOf()
+        var friday: MutableList<BangumiListInterface> = arrayListOf()
+        var saturday: MutableList<BangumiListInterface> = arrayListOf()
+        var sunday: MutableList<BangumiListInterface> = arrayListOf()
         for (bangumi in bangumis) {
             val local = Instant.ofEpochMilli(bangumi.subscription.lastUpdateTime)
                 .atZone(ZoneId.systemDefault()).toLocalDate()
@@ -65,6 +65,55 @@ class SubscriptionListViewModel : BaseViewModel() {
                 DayOfWeek.SUNDAY -> sunday.add(bangumi)
             }
         }
+        monday = monday.sortedBy {
+            val subscription = (it as BangumiEntity).subscription
+            val localTime =
+                Instant.ofEpochMilli(subscription.lastUpdateTime).atZone(ZoneId.systemDefault())
+                    .toLocalTime()
+            localTime.toSecondOfDay()
+        }.toMutableList()
+        tuesday = tuesday.sortedBy {
+            val subscription = (it as BangumiEntity).subscription
+            val localTime =
+                Instant.ofEpochMilli(subscription.lastUpdateTime).atZone(ZoneId.systemDefault())
+                    .toLocalTime()
+            localTime.toSecondOfDay()
+        }.toMutableList()
+        wednesday = wednesday.sortedBy {
+            val subscription = (it as BangumiEntity).subscription
+            val localTime =
+                Instant.ofEpochMilli(subscription.lastUpdateTime).atZone(ZoneId.systemDefault())
+                    .toLocalTime()
+            localTime.toSecondOfDay()
+        }.toMutableList()
+        friday = friday.sortedBy {
+            val subscription = (it as BangumiEntity).subscription
+            val localTime =
+                Instant.ofEpochMilli(subscription.lastUpdateTime).atZone(ZoneId.systemDefault())
+                    .toLocalTime()
+            localTime.toSecondOfDay()
+        }.toMutableList()
+        saturday = saturday.sortedBy {
+            val subscription = (it as BangumiEntity).subscription
+            val localTime =
+                Instant.ofEpochMilli(subscription.lastUpdateTime).atZone(ZoneId.systemDefault())
+                    .toLocalTime()
+            localTime.toSecondOfDay()
+        }.toMutableList()
+        sunday = sunday.sortedBy {
+            val subscription = (it as BangumiEntity).subscription
+            val localTime =
+                Instant.ofEpochMilli(subscription.lastUpdateTime).atZone(ZoneId.systemDefault())
+                    .toLocalTime()
+            localTime.toSecondOfDay()
+        }.toMutableList()
+        monday.sortedBy {
+            val subscription = (it as BangumiEntity).subscription
+            val localTime =
+                Instant.ofEpochMilli(subscription.lastUpdateTime).atZone(ZoneId.systemDefault())
+                    .toLocalTime()
+            localTime.toSecondOfDay()
+        }.toMutableList()
         if (monday.isNotEmpty()) monday.add(0, BangumiListGroup(DayOfWeek.MONDAY))
         if (tuesday.isNotEmpty()) tuesday.add(0, BangumiListGroup(DayOfWeek.TUESDAY))
         if (wednesday.isNotEmpty()) wednesday.add(0, BangumiListGroup(DayOfWeek.WEDNESDAY))

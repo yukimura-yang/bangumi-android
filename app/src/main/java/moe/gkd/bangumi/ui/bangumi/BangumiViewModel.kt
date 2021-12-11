@@ -128,6 +128,7 @@ class BangumiViewModel(private val id: String) : BaseViewModel() {
      * 更新订阅列表
      */
     fun updateSubscribe() {
+        updateSubscribeJob?.cancel()
         updateSubscribeJob = viewModelScope.launch {
             try {
                 withContext(Dispatchers.IO) {
@@ -222,6 +223,7 @@ class BangumiViewModel(private val id: String) : BaseViewModel() {
      * 强制刷新
      */
     fun updateSubscribeForced() {
+        updateSubscribeJob?.cancel()
         updateSubscribeJob = viewModelScope.launch {
             try {
                 withContext(Dispatchers.IO) {
@@ -299,6 +301,7 @@ class BangumiViewModel(private val id: String) : BaseViewModel() {
                         )
                         torrents.add(torrentEntity)
                     }
+                    AppDatabase.getInstance().bangumiDao().clearTorrent(bangumi.subscription.id)
                     AppDatabase.getInstance().bangumiDao().insertAllTorrents(torrents)
                     loadState.postValue(LoadStateEntity(false, true))
                 }

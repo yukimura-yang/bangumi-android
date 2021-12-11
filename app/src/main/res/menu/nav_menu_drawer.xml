@@ -16,5 +16,10 @@
             android:icon="@drawable/ic_baseline_settings_24"
             android:title="SETTINGS" />
 
+        <item
+            android:id="@+id/about"
+            android:icon="@drawable/ic_baseline_info_24"
+            android:title="ABOUT" />
+
     </group>
 </menu>

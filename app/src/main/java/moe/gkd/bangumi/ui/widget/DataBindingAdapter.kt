@@ -17,8 +17,8 @@ fun isRefreshing(view: SwipeRefreshLayout, isRefreshing: Boolean) {
 fun setAvatarUrl(view: ImageView, url: String) {
     Glide.with(view)
         .load(url)
-        .placeholder(R.mipmap.waifu)
-        .error(R.mipmap.waifu)
+        .placeholder(R.mipmap.ic_launcher)
+        .error(R.mipmap.ic_launcher)
         .into(view)
 }
 
