@@ -2,6 +2,7 @@ package moe.gkd.bangumi.http
 
 import android.util.Log
 import com.facebook.stetho.okhttp3.StethoInterceptor
+import moe.gkd.bangumi.MainApplication
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -31,7 +32,7 @@ class RetrofitFactory private constructor() {
             .addInterceptor(MoreBaseUrlInterceptor())
             .addInterceptor(initLogInterceptor())
             .addNetworkInterceptor(StethoInterceptor())
-            .dns(CustomDns())
+            .dns(DnsUtils.getDns())
             .build()
     }
 

@@ -51,6 +51,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
             binding.navigation.setCheckedItem(R.id.bangumi)
             switchFragment(R.id.nav_bangumi)
             return
+        } else if (navController.currentDestination!!.id == R.id.nav_webdav) {
+            return
         }
         super.onBackPressed()
     }
@@ -76,5 +78,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 }

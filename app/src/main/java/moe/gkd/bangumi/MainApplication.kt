@@ -4,6 +4,7 @@ import android.app.Application
 import com.facebook.stetho.Stetho
 import moe.gkd.bangumi.data.AppDatabase
 import moe.gkd.bangumi.data.SharedPreferencesHelper
+import moe.gkd.bangumi.ui.utils.WebDavUtils
 
 class MainApplication : Application() {
     companion object {
@@ -18,6 +19,7 @@ class MainApplication : Application() {
         initHashMap()
         Stetho.initializeWithDefaults(this)
         AppDatabase.getInstance()
+        WebDavUtils.init()
     }
 
     /**

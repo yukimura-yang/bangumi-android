@@ -1,17 +1,28 @@
 package moe.gkd.bangumi.transmission
 
-import moe.gkd.bangumi.MainApplication
-import moe.gkd.bangumi.TRANSMISSION_AUTHORIZATION
-import moe.gkd.bangumi.TRANSMISSION_SESSION_ID
+import android.util.Log
+import moe.gkd.bangumi.*
 import okhttp3.Interceptor
 import okhttp3.Response
 
 class BasicParamsInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
+        Log.e("BasicParamsInterceptor", "intercept: 执行")
         val request = chain.request()
+        val url = request.url
         val requestBuilder = request.newBuilder()
         val headerBuilder = request.headers.newBuilder()
+        val host = MainApplication.INSTANCE.hashMap[TRANSMISSION_HOST].toString()
+        val scheme =
+            if (MainApplication.INSTANCE.hashMap[TRANSMISSION_SSL] == true) "https" else "http"
+        val port = MainApplication.INSTANCE.hashMap[TRANSMISSION_PORT].toString().toInt()
+        val newHttpUrl = url.newBuilder()
+            .host(host)
+            .scheme(scheme)
+            .port(port)
+            .build()
+        requestBuilder.url(newHttpUrl)
         val sessionId =
             MainApplication.INSTANCE.hashMap.getOrDefault(TRANSMISSION_SESSION_ID, "").toString()
         val authenticator =
@@ -23,12 +34,14 @@ class BasicParamsInterceptor : Interceptor {
             headerBuilder.add("Authorization", authenticator)
         }
         requestBuilder.headers(headerBuilder.build())
-        val response = chain.proceed(requestBuilder.build())
-        if (response.code == 401) {
-            MainApplication.INSTANCE.hashMap.remove(TRANSMISSION_AUTHORIZATION)
-        } else if (response.code == 409) {
-            MainApplication.INSTANCE.hashMap.remove(TRANSMISSION_SESSION_ID)
+        val newReq = requestBuilder.build()
+        Log.e("BasicParamsInterceptor", "intercept: ${newReq.url.host}")
+        return chain.proceed(newReq).also {
+            if (it.code == 401) {
+                MainApplication.INSTANCE.hashMap.remove(TRANSMISSION_AUTHORIZATION)
+            } else if (it.code == 409) {
+                MainApplication.INSTANCE.hashMap.remove(TRANSMISSION_SESSION_ID)
+            }
         }
-        return response
     }
 }

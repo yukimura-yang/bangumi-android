@@ -9,6 +9,7 @@ import moe.gkd.bangumi.*
 import moe.gkd.bangumi.data.SharedPreferencesHelper
 import moe.gkd.bangumi.databinding.FragmentSettingsBinding
 import moe.gkd.bangumi.ui.BaseFragment
+import moe.gkd.bangumi.ui.utils.WebDavUtils
 
 class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
     private val viewModel: SettingsViewModel by viewModels()
@@ -68,10 +69,12 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
         binding.webdavUsername.setInputListener { text ->
             MainApplication.INSTANCE.hashMap[WEBDAV_USERNAME] = text
             SharedPreferencesHelper.SP.webdavUserName = text
+            WebDavUtils.init()
         }
         binding.webdavPassword.setInputListener { text ->
             MainApplication.INSTANCE.hashMap[WEBDAV_PASSWORD] = text
             SharedPreferencesHelper.SP.webdavPassword = text
+            WebDavUtils.init()
         }
         binding.checkRequest.setOnClickListener(this::onCheckTransmission)
     }

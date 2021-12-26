@@ -3,6 +3,7 @@ package moe.gkd.bangumi.transmission
 import android.util.Log
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import moe.gkd.bangumi.TRANSMISSION_DEFAULT_URL
+import moe.gkd.bangumi.http.DnsUtils
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -28,13 +29,13 @@ class TransmissionFactory private constructor() {
 
     private fun initOkhttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
-            .connectTimeout(15, TimeUnit.SECONDS)
-            .readTimeout(15, TimeUnit.SECONDS)
-            .addInterceptor(TransmissionHostInterceptor())
+            .connectTimeout(5, TimeUnit.SECONDS)
+            .readTimeout(5, TimeUnit.SECONDS)
+            .authenticator(TransmissionAuthenticator())
             .addInterceptor(BasicParamsInterceptor())
             .addInterceptor(initLogInterceptor())
             .addNetworkInterceptor(StethoInterceptor())
-            .authenticator(TransmissionAuthenticator())
+            .dns(DnsUtils.getDns())
             .build()
     }
 

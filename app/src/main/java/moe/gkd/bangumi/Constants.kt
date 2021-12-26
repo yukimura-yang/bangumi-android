@@ -1,10 +1,15 @@
 package moe.gkd.bangumi
 
 import android.graphics.Color
+import android.util.Log
 import com.thegrizzlylabs.sardineandroid.DavResource
+import java.io.InputStream
+import java.io.OutputStream
+import java.net.URLEncoder
 import java.time.*
 import java.time.format.DateTimeFormatter
 import java.util.*
+import java.util.regex.Pattern
 
 const val BANGUMI_ID = "bangumiid"
 const val BANGUMI_TITLE = "bangumititle"
@@ -127,4 +132,21 @@ fun DavResource.isVideoFile(): Boolean {
         return true
     }
     return false
+}
+
+public fun InputStream.copyTo(
+    out: OutputStream,
+    onCopy: (bytesCopied: Long) -> Unit
+): Long {
+    var bytesCopied: Long = 0
+    val bufferSize = DEFAULT_BUFFER_SIZE
+    val buffer = ByteArray(bufferSize)
+    var bytes = read(buffer)
+    while (bytes >= 0) {
+        out.write(buffer, 0, bytes)
+        bytesCopied += bytes
+        onCopy(bytesCopied)
+        bytes = read(buffer)
+    }
+    return bytesCopied
 }
