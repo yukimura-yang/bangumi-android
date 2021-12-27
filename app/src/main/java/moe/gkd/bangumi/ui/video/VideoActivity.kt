@@ -5,17 +5,22 @@ import android.view.WindowManager
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.google.android.exoplayer2.*
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.PlaybackException
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
-import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.thegrizzlylabs.sardineandroid.util.SardineUtil
 import moe.gkd.bangumi.R
 import moe.gkd.bangumi.databinding.ActivityVideoBinding
+import moe.gkd.bangumi.http.DnsUtils
 import moe.gkd.bangumi.ui.BaseActivity
 import moe.gkd.bangumi.ui.utils.WebDavUtils
 import okhttp3.Credentials.basic
+import okhttp3.OkHttpClient
+import java.util.concurrent.TimeUnit
 
 class VideoActivity : BaseActivity<ActivityVideoBinding>(R.layout.activity_video), Player.Listener {
     private val isOnline by lazy {
@@ -37,20 +42,34 @@ class VideoActivity : BaseActivity<ActivityVideoBinding>(R.layout.activity_video
         initVideo()
     }
 
-    private fun headers(): DataSource.Factory {
-        val headersMap = hashMapOf<String, String>()
-        headersMap["Authorization"] =
-            basic(WebDavUtils.getUserName(), WebDavUtils.getPassword(), SardineUtil.standardUTF8())
-        return DefaultHttpDataSource.Factory().setDefaultRequestProperties(headersMap)
-    }
-
     private lateinit var player: Player
 
     private fun initVideo() {
         Log.e(TAG, "initVideo: $data")
+        val dataSource = DefaultDataSourceFactory(
+            this, OkHttpDataSource.Factory(
+                OkHttpClient.Builder()
+                    .connectTimeout(5, TimeUnit.SECONDS)
+                    .retryOnConnectionFailure(true)
+                    .dns(DnsUtils.getDns())
+                    .addInterceptor {
+                        val request = it.request().newBuilder()
+                        request.removeHeader("Authorization")
+                        request.addHeader(
+                            "Authorization",
+                            basic(
+                                WebDavUtils.getUserName(),
+                                WebDavUtils.getPassword(),
+                                SardineUtil.standardUTF8()
+                            )
+                        )
+                        it.proceed(request.build())
+                    }
+                    .build())
+        )
         player = SimpleExoPlayer.Builder(this)
             .setMediaSourceFactory(
-                DefaultMediaSourceFactory(headers()),
+                DefaultMediaSourceFactory(dataSource),
             )
             .build()
         player.addListener(this)
@@ -82,8 +101,8 @@ class VideoActivity : BaseActivity<ActivityVideoBinding>(R.layout.activity_video
     override fun onDestroy() {
         super.onDestroy()
         if (this::player.isInitialized) {
-            player.release()
             player.stop()
+            player.release()
         }
     }
 }

@@ -115,9 +115,8 @@ dependencies {
         exclude module: "simple-xml"
         exclude module: "okhttp"
     }
-    implementation("com.google.android.exoplayer:exoplayer:2.15.1") {
-
-    }
+    implementation("com.google.android.exoplayer:exoplayer:2.15.1")
+    implementation("com.google.android.exoplayer:extension-okhttp:2.15.1")
 
     implementation("com.google.guava:guava:31.0.1-android")
 }
