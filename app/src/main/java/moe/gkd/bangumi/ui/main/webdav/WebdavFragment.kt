@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.ObservableLong
 import androidx.fragment.app.viewModels
+import com.thegrizzlylabs.sardineandroid.DavResource
 import moe.gkd.bangumi.databinding.FragmentWebdavBinding
 import moe.gkd.bangumi.isVideoFile
 import moe.gkd.bangumi.ui.BaseFragment
@@ -22,7 +23,7 @@ class WebdavFragment : BaseFragment<FragmentWebdavBinding>() {
                 viewModel.loadFiles(it.path)
             } else {
                 if (it.isVideoFile()) {
-                    playVideo(it.path)
+                    playVideo(it)
                 }
             }
         }
@@ -39,9 +40,10 @@ class WebdavFragment : BaseFragment<FragmentWebdavBinding>() {
         }
     }
 
-    private fun playVideo(url: String) {
+    private fun playVideo(resource: DavResource) {
         val intent = Intent(requireContext(), VideoActivity::class.java)
-        intent.putExtra("data", url)
+        intent.putExtra("data", resource.path)
+        intent.putExtra("title", resource.name)
         intent.putExtra("isOnline", true)
         startActivity(intent)
     }
