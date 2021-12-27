@@ -40,16 +40,10 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
-            ndk {
-                abiFilters 'arm64-v8a', 'x86_64'
-            }
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            ndk {
-                abiFilters 'arm64-v8a'
-            }
         }
     }
     compileOptions {
@@ -121,9 +115,9 @@ dependencies {
         exclude module: "simple-xml"
         exclude module: "okhttp"
     }
-    //ijkplayer
-    implementation("tv.danmaku.ijk.media:ijkplayer-java:$ijkplayerVersion")
-    implementation("tv.danmaku.ijk.media:ijkplayer-exo:$ijkplayerVersion")
+    implementation("com.google.android.exoplayer:exoplayer:2.15.1") {
+
+    }
 
     implementation("com.google.guava:guava:31.0.1-android")
 }

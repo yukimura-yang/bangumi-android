@@ -40,7 +40,7 @@ class WebdavViewModel : BaseViewModel() {
                         WebDavUtils.getSardine().list("${getAddress()}${path}")
                     } catch (e: SocketTimeoutException) {
                         Log.e(TAG, "loadFiles: 超时", e)
-//                        loadFiles(path)
+                        loadFiles(path)
                         return@withContext
                     }
                     lastPath.add(files.value?.firstOrNull()?.path ?: "/")
@@ -51,50 +51,6 @@ class WebdavViewModel : BaseViewModel() {
             }
         }
     }
-
-    val downloaded = MutableLiveData<File?>(null)
-    val progress = MutableLiveData(0L)
-
-    fun getDownloadFile(path: String, dir: File): File {
-        val name = Hashing.md5().hashString(path, Charset.defaultCharset()).toString()
-        return File(dir, name)
-    }
-
-    fun downloadFile(path: String, cache: File, dir: File): Job {
-        val job = viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                try {
-                    val name = Hashing.md5().hashString(path, Charset.defaultCharset()).toString()
-                    val inputStream = WebDavUtils.download(path)
-                    val cacheFile = File(cache, name)
-                    if (cacheFile.exists()) {
-                        cacheFile.delete()
-                    }
-                    val file = getDownloadFile(path, dir)
-                    cacheFile.outputStream().use { outputStream ->
-                        inputStream.copyTo(outputStream) { bytesCopied ->
-                            if (!isActive) {
-                                inputStream.close()
-                            }
-                            Log.e(TAG, "downloadFile: $bytesCopied")
-                            progress.postValue(bytesCopied)
-                        }
-                    }
-                    inputStream.close()
-                    if (file.exists()) {
-                        file.delete()
-                    }
-                    cacheFile.renameTo(file)
-                    downloaded.postValue(file)
-                    Log.e(TAG, "downloadFile: 完")
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
-        return job
-    }
-
 
     private fun initClient() {
         loadFiles("/")

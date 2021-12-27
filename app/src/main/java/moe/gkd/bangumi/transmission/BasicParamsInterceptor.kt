@@ -4,6 +4,7 @@ import android.util.Log
 import moe.gkd.bangumi.*
 import okhttp3.Interceptor
 import okhttp3.Response
+import java.net.SocketTimeoutException
 
 class BasicParamsInterceptor : Interceptor {
 
@@ -36,12 +37,13 @@ class BasicParamsInterceptor : Interceptor {
         requestBuilder.headers(headerBuilder.build())
         val newReq = requestBuilder.build()
         Log.e("BasicParamsInterceptor", "intercept: ${newReq.url.host}")
-        return chain.proceed(newReq).also {
-            if (it.code == 401) {
-                MainApplication.INSTANCE.hashMap.remove(TRANSMISSION_AUTHORIZATION)
-            } else if (it.code == 409) {
-                MainApplication.INSTANCE.hashMap.remove(TRANSMISSION_SESSION_ID)
-            }
+        val response: Response
+        response = chain.proceed(newReq)
+        if (response.code == 401) {
+            MainApplication.INSTANCE.hashMap.remove(TRANSMISSION_AUTHORIZATION)
+        } else if (response.code == 409) {
+            MainApplication.INSTANCE.hashMap.remove(TRANSMISSION_SESSION_ID)
         }
+        return response
     }
 }

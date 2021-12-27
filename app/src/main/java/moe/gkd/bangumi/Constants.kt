@@ -1,15 +1,12 @@
 package moe.gkd.bangumi
 
 import android.graphics.Color
-import android.util.Log
 import com.thegrizzlylabs.sardineandroid.DavResource
 import java.io.InputStream
 import java.io.OutputStream
-import java.net.URLEncoder
 import java.time.*
 import java.time.format.DateTimeFormatter
 import java.util.*
-import java.util.regex.Pattern
 
 const val BANGUMI_ID = "bangumiid"
 const val BANGUMI_TITLE = "bangumititle"
