@@ -1,15 +1,18 @@
 package moe.gkd.bangumi.ui.main.webdav
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.ObservableLong
 import androidx.fragment.app.viewModels
 import com.thegrizzlylabs.sardineandroid.DavResource
 import moe.gkd.bangumi.databinding.FragmentWebdavBinding
+import moe.gkd.bangumi.getParent
 import moe.gkd.bangumi.isVideoFile
 import moe.gkd.bangumi.ui.BaseFragment
 import moe.gkd.bangumi.ui.video.VideoActivity
+import kotlin.math.log
 
 class WebdavFragment : BaseFragment<FragmentWebdavBinding>() {
     private val viewModel: WebdavViewModel by viewModels()
@@ -19,24 +22,20 @@ class WebdavFragment : BaseFragment<FragmentWebdavBinding>() {
     override fun initViews() {
         binding.recyclerView.adapter = adapter
         adapter.setOnItemClickedListener {
-            if (it.isDirectory) {
-                viewModel.loadFiles(it.path)
+            if (it == null) {
+                //返回上一级
+                Log.e(TAG, "返回 ${viewModel.resources.value?.first()?.path}")
+                val path = viewModel.resources.value?.firstOrNull()?.getParent() ?: "/"
+                viewModel.loadFiles(path)
             } else {
-                if (it.isVideoFile()) {
-                    playVideo(it)
+                if (it.isDirectory) {
+                    viewModel.loadFiles(it.path)
+                } else {
+                    if (it.isVideoFile()) {
+                        playVideo(it)
+                    }
                 }
             }
-        }
-        binding.parentDirectory.setOnClickListener {
-            val item = viewModel.files.value?.firstOrNull() ?: return@setOnClickListener
-            var path: String
-            try {
-                path = item.path.substring(0, item.path.lastIndexOf("/"))
-                path = path.substring(0, path.lastIndexOf("/"))
-            } catch (e: Exception) {
-                path = "/"
-            }
-            viewModel.loadFiles(path)
         }
     }
 
@@ -49,10 +48,8 @@ class WebdavFragment : BaseFragment<FragmentWebdavBinding>() {
     }
 
     override fun initViewModel() {
-        viewModel.files.observe(this) {
-            val newList = it.toMutableList()
-            newList.removeAt(0)
-            adapter.submitList(newList.sortedBy { it.name ?: "" })
+        viewModel.resources.observe(this) {
+            adapter.submitList(it)
         }
     }
 

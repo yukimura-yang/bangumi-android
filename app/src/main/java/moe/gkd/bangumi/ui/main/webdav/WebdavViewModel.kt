@@ -3,28 +3,23 @@ package moe.gkd.bangumi.ui.main.webdav
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.google.common.hash.Hashing
 import com.thegrizzlylabs.sardineandroid.DavResource
 import kotlinx.coroutines.*
-import moe.gkd.bangumi.copyTo
-import moe.gkd.bangumi.data.entity.LoadStateEntity
 import moe.gkd.bangumi.ui.BaseViewModel
 import moe.gkd.bangumi.ui.utils.WebDavUtils
 import moe.gkd.bangumi.ui.utils.WebDavUtils.getAddress
-import java.io.File
 import java.net.SocketTimeoutException
-import java.nio.charset.Charset
+import java.util.*
+import kotlin.Comparator
+import kotlin.collections.ArrayList
 
 class WebdavViewModel : BaseViewModel() {
-    val files = MutableLiveData<List<DavResource>>()
-
-    val loadState = MutableLiveData<LoadStateEntity>()
-
-    var lastPath = arrayListOf<String>()
 
     init {
         initClient()
     }
+
+    val resources = MutableLiveData<List<DavResource>>()
 
     var loadingJob: Job? = null
 
@@ -43,8 +38,23 @@ class WebdavViewModel : BaseViewModel() {
                         loadFiles(path)
                         return@withContext
                     }
-                    lastPath.add(files.value?.firstOrNull()?.path ?: "/")
-                    files.postValue(resources)
+                    if (!isActive) return@withContext
+                    val newList = ArrayList(
+                        resources.subList(1, resources.size)
+                            .sortedWith({ o1, o2 ->
+                                if (o1.isDirectory && o2.isDirectory) {
+                                    o1.name.compareTo(o2.name)
+                                } else if (o1.isDirectory) {
+                                    -1
+                                } else if (o2.isDirectory) {
+                                    1
+                                } else {
+                                    o1.name.compareTo(o2.name)
+                                }
+                            })
+                    )
+                    newList.add(0, resources.first())
+                    this@WebdavViewModel.resources.postValue(newList)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

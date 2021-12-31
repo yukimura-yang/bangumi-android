@@ -2,6 +2,7 @@ package moe.gkd.bangumi
 
 import android.graphics.Color
 import com.thegrizzlylabs.sardineandroid.DavResource
+import java.io.File
 import java.io.InputStream
 import java.io.OutputStream
 import java.time.*
@@ -146,4 +147,12 @@ public fun InputStream.copyTo(
         bytes = read(buffer)
     }
     return bytesCopied
+}
+
+/**
+ * 取巧
+ */
+fun DavResource.getParent(): String? {
+    val file = File(path)
+    return file.parent
 }

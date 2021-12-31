@@ -45,29 +45,38 @@ class WebDavAdapter : ListAdapter<DavResource, BaseViewHolder<ItemWebdavFileBind
      */
     override fun onBindViewHolder(holder: BaseViewHolder<ItemWebdavFileBinding>, position: Int) {
         val resource = getItem(position)
-        holder.binding.name = resource.name
-        holder.binding.contentType = resource.let {
-            if (it.isDirectory) {
-                0
-            } else if (it.isVideoFile()) {
-                1
-            } else {
-                2
+        if (position == 0) {
+            holder.binding.name = "..."
+            holder.binding.contentType = -1
+        } else {
+            holder.binding.name = resource.name
+            holder.binding.contentType = resource.let {
+                if (it.isDirectory) {
+                    0
+                } else if (it.isVideoFile()) {
+                    1
+                } else {
+                    2
+                }
             }
         }
+
         holder.itemView.setOnClickListener {
-            listener?.onItemClicked(resource)
+            if (position == 0) {
+                listener?.onItemClicked(null)
+            } else {
+                listener?.onItemClicked(resource)
+            }
         }
     }
 
-    private var listener: OnItemClickedListener<DavResource>? = null
+    private var listener: OnItemClickedListener<DavResource?>? = null
 
-    fun setOnItemClickedListener(listener: (DavResource) -> Unit) {
-        this.listener = object : OnItemClickedListener<DavResource> {
-            override fun onItemClicked(item: DavResource) {
+    fun setOnItemClickedListener(listener: (DavResource?) -> Unit) {
+        this.listener = object : OnItemClickedListener<DavResource?> {
+            override fun onItemClicked(item: DavResource?) {
                 listener.invoke(item)
             }
         }
     }
-
 }

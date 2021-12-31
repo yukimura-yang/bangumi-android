@@ -26,7 +26,7 @@
         <ImageView
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:src="@{contentType==0?@drawable/ic_baseline_folder_24:contentType==1?@drawable/ic_baseline_movie_24:@drawable/ic_baseline_cloud_24}"
+            android:src="@{contentType==0?@drawable/ic_baseline_folder_24:contentType==1?@drawable/ic_baseline_movie_24:contentType==2?@drawable/ic_baseline_cloud_24:@drawable/ic_baseline_folder_open_24}"
             tools:src="@drawable/ic_baseline_movie_24" />
 
         <TextView
