@@ -5,12 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.thegrizzlylabs.sardineandroid.DavResource
 import kotlinx.coroutines.*
+import moe.gkd.bangumi.data.AppDatabase
 import moe.gkd.bangumi.ui.BaseViewModel
 import moe.gkd.bangumi.ui.utils.WebDavUtils
 import moe.gkd.bangumi.ui.utils.WebDavUtils.getAddress
 import java.net.SocketTimeoutException
 import java.util.*
-import kotlin.Comparator
 import kotlin.collections.ArrayList
 
 class WebdavViewModel : BaseViewModel() {
@@ -19,9 +19,29 @@ class WebdavViewModel : BaseViewModel() {
         initClient()
     }
 
+    var playing = ""
+
+    val playHistory = AppDatabase.getInstance().playHistoryDao().getAll()
+
     val resources = MutableLiveData<List<DavResource>>()
 
     var loadingJob: Job? = null
+
+    /**
+     * 0 没有播放记录
+     * 1 播放过
+     * 2 播放完
+     */
+    fun getHistoryState(path: String): Int {
+        val history = playHistory.value?.firstOrNull { it.path == path }
+        if (history == null) {
+            return 0
+        } else if (history.isCompleted) {
+            return 3
+        } else {
+            return 1
+        }
+    }
 
     fun loadFiles(path: String) {
         Log.d(TAG, "loadFiles: ${path}")

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.ObservableLong
 import androidx.fragment.app.viewModels
 import com.thegrizzlylabs.sardineandroid.DavResource
 import moe.gkd.bangumi.databinding.FragmentWebdavBinding
@@ -12,12 +11,11 @@ import moe.gkd.bangumi.getParent
 import moe.gkd.bangumi.isVideoFile
 import moe.gkd.bangumi.ui.BaseFragment
 import moe.gkd.bangumi.ui.video.VideoActivity
-import kotlin.math.log
 
 class WebdavFragment : BaseFragment<FragmentWebdavBinding>() {
     private val viewModel: WebdavViewModel by viewModels()
 
-    private val adapter = WebDavAdapter()
+    private val adapter by lazy { WebDavAdapter(viewModel) }
 
     override fun initViews() {
         binding.recyclerView.adapter = adapter
@@ -45,11 +43,28 @@ class WebdavFragment : BaseFragment<FragmentWebdavBinding>() {
         intent.putExtra("title", resource.name)
         intent.putExtra("isOnline", true)
         startActivity(intent)
+        viewModel.playing = resource.path
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val index = adapter.currentList.indexOfFirst { it.path == viewModel.playing }
+        if (index != -1) {
+            adapter.notifyItemChanged(index)
+        }
     }
 
     override fun initViewModel() {
         viewModel.resources.observe(this) {
             adapter.submitList(it)
+        }
+        viewModel.playHistory.observe(this) {
+            if (adapter.itemCount > 0) {
+                val index = adapter.currentList.indexOfFirst { it.path == viewModel.playing }
+                if (index != -1) {
+                    adapter.notifyItemChanged(index)
+                }
+            }
         }
     }
 

@@ -11,14 +11,18 @@
             name="contentType"
             type="Integer" />
 
+        <variable
+            name="state"
+            type="Integer" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/shape_webdav_item"
         android:gravity="center_vertical"
+        android:minHeight="48dp"
         android:orientation="horizontal"
         android:paddingLeft="12dp"
         android:paddingRight="12dp">
@@ -31,11 +35,13 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
             android:gravity="center_vertical"
-            android:singleLine="true"
+            android:minHeight="48dp"
             android:text="@{name}"
-            tools:text="无职转生" />
+            android:textColor="@{state==0?@color/play_state_none:state==1?@color/play_state_playing:@color/play_state_played}"
+            tools:text="无职转生"
+            tools:textColor="@color/play_state_played" />
     </LinearLayout>
 </layout>

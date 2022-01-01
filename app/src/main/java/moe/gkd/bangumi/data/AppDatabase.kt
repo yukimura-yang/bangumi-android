@@ -8,12 +8,14 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import moe.gkd.bangumi.MainApplication
 import moe.gkd.bangumi.data.dao.BangumiDao
+import moe.gkd.bangumi.data.dao.PlayHistoryDao
+import moe.gkd.bangumi.data.entity.PlayHistory
 import moe.gkd.bangumi.data.entity.SubscriptionEntity
 import moe.gkd.bangumi.data.entity.TorrentEntity
 
 @Database(
-    entities = [SubscriptionEntity::class, TorrentEntity::class],
-    version = 3,
+    entities = [SubscriptionEntity::class, TorrentEntity::class, PlayHistory::class],
+    version = 4,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -31,8 +33,10 @@ abstract class AppDatabase : RoomDatabase() {
                         AppDatabase::class.java,
                         DB_NAME
                     )
+                        .allowMainThreadQueries()
                         .addMigrations(MIGRATION_1_2)
                         .addMigrations(MIGRATION_2_3)
+                        .addMigrations(MIGRATION_3_4)
                         .build()
                 }
                 return INSTANCE!!
@@ -51,6 +55,11 @@ abstract class AppDatabase : RoomDatabase() {
                 database.execSQL("ALTER TABLE subscriptions ADD COLUMN lastUpdateTime INTEGER NOT NULL DEFAULT 0")
             }
         }
+        private val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("CREATE TABLE playHistory(path TEXT NOT NULL,isCompleted INTEGER NOT NULL,duration INTEGER NOT NULL, PRIMARY KEY(path))")
+            }
+        }
 
         fun destroyInstance() {
             INSTANCE = null
@@ -58,4 +67,5 @@ abstract class AppDatabase : RoomDatabase() {
     }
 
     public abstract fun bangumiDao(): BangumiDao
+    public abstract fun playHistoryDao(): PlayHistoryDao
 }

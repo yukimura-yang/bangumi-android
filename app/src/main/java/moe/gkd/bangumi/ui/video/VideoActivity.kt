@@ -3,14 +3,18 @@ package moe.gkd.bangumi.ui.video
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.Player.STATE_ENDED
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
@@ -31,6 +35,14 @@ class VideoActivity : BaseActivity<ActivityVideoBinding>(R.layout.activity_video
     private val isOnline by lazy {
         intent.getBooleanExtra("isOnline", false)
     }
+    private val viewModel: VideoViewModel by viewModels {
+        object : ViewModelProvider.Factory {
+            @SuppressWarnings("UNCHECKED_CAST")
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return VideoViewModel(intent.getStringExtra("data").toString()) as T
+            }
+        }
+    }
 
     private val isShow = ObservableBoolean(true)
     private val title = ObservableField<String>()
@@ -48,7 +60,6 @@ class VideoActivity : BaseActivity<ActivityVideoBinding>(R.layout.activity_video
         title.set(intent.getStringExtra("title"))
         binding.isShow = isShow
         binding.title = title
-        hideSystemBars()
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         initVideo()
         binding.player.setControllerVisibilityListener(this)
@@ -93,6 +104,10 @@ class VideoActivity : BaseActivity<ActivityVideoBinding>(R.layout.activity_video
     }
 
     override fun initViewModel() {
+        viewModel.playHistory.observe(this) {
+            if (it == null) return@observe
+            player.seekTo(it.duration)
+        }
     }
 
     private fun hideSystemBars() {
@@ -106,19 +121,56 @@ class VideoActivity : BaseActivity<ActivityVideoBinding>(R.layout.activity_video
         supportActionBar?.hide()
     }
 
+    private fun showSystemBars() {
+        val windowInsetsController =
+            ViewCompat.getWindowInsetsController(window.decorView) ?: return
+        windowInsetsController.systemBarsBehavior =
+            WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_SWIPE
+        windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
+    }
+
     override fun onPlayerError(error: PlaybackException) {
         Log.e(TAG, "onPlayerError", error)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        if (this::player.isInitialized) {
-            player.stop()
-            player.release()
+    override fun onResume() {
+        super.onResume()
+        hideSystemBars()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.root.post {
+            showSystemBars()
         }
+        if (this::player.isInitialized) {
+            player.pause()
+        }
+    }
+
+    override fun onDestroy() {
+        if (this::player.isInitialized) {
+            player.release()
+            if (viewModel.isEnd) {
+                viewModel.setPlayHistory(
+                    true,
+                    0
+                )
+            } else {
+                viewModel.setPlayHistory(
+                    false,
+                    player.currentPosition
+                )
+            }
+        }
+        super.onDestroy()
     }
 
     override fun onVisibilityChange(visibility: Int) {
         isShow.set(visibility == View.VISIBLE)
+    }
+
+    override fun onPlaybackStateChanged(playbackState: Int) {
+        viewModel.isEnd = playbackState == STATE_ENDED
     }
 }
