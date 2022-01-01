@@ -6,6 +6,7 @@
         <entry key="../../../../../../layout/custom_preview.xml" value="0.5287179487179487" />
         <entry key="../../../../.gradle/caches/transforms-3/482012e223a15065d34eece9951025cf/transformed/jetified-exoplayer-ui-2.15.1/res/layout/exo_player_control_view.xml" value="0.31875" />
         <entry key="../../../../.gradle/caches/transforms-3/482012e223a15065d34eece9951025cf/transformed/jetified-exoplayer-ui-2.15.1/res/layout/exo_player_view.xml" value="0.31875" />
+        <entry key="../../../../.gradle/caches/transforms-3/482012e223a15065d34eece9951025cf/transformed/jetified-exoplayer-ui-2.15.1/res/layout/exo_styled_player_control_view.xml" value="0.31875" />
         <entry key="app/src/main/res/drawable/circle_shape.xml" value="0.5297435897435897" />
         <entry key="app/src/main/res/drawable/ic_baseline_folder_24.xml" value="0.33489583333333334" />
         <entry key="app/src/main/res/drawable/ic_baseline_live_tv_24.xml" value="0.5380208333333333" />
@@ -17,6 +18,8 @@
         <entry key="app/src/main/res/layout/activity_bangumi.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.45" />
         <entry key="app/src/main/res/layout/activity_video.xml" value="0.2125" />
+        <entry key="app/src/main/res/layout/custom_player_controll.xml" value="0.31875" />
+        <entry key="app/src/main/res/layout/custom_player_controller.xml" value="0.31875" />
         <entry key="app/src/main/res/layout/dialog_download.xml" value="0.31875" />
         <entry key="app/src/main/res/layout/dialog_edit_text.xml" value="0.521875" />
         <entry key="app/src/main/res/layout/fragment_about.xml" value="0.25" />

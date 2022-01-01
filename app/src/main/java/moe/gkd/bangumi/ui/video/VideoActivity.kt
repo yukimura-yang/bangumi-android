@@ -1,24 +1,28 @@
 package moe.gkd.bangumi.ui.video
 
+import android.graphics.Color
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.PlaybackException
-import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER
 import com.google.android.exoplayer2.Player.STATE_ENDED
-import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
-import com.google.android.exoplayer2.ui.PlayerControlView
+import com.google.android.exoplayer2.text.Cue
+import com.google.android.exoplayer2.ui.CaptionStyleCompat
+import com.google.android.exoplayer2.ui.CaptionStyleCompat.EDGE_TYPE_NONE
+import com.google.android.exoplayer2.ui.StyledPlayerControlView
+import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.thegrizzlylabs.sardineandroid.util.SardineUtil
 import moe.gkd.bangumi.R
@@ -31,7 +35,7 @@ import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
 
 class VideoActivity : BaseActivity<ActivityVideoBinding>(R.layout.activity_video), Player.Listener,
-    PlayerControlView.VisibilityListener {
+    StyledPlayerControlView.VisibilityListener {
     private val isOnline by lazy {
         intent.getBooleanExtra("isOnline", false)
     }
@@ -39,13 +43,19 @@ class VideoActivity : BaseActivity<ActivityVideoBinding>(R.layout.activity_video
         object : ViewModelProvider.Factory {
             @SuppressWarnings("UNCHECKED_CAST")
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return VideoViewModel(intent.getStringExtra("data").toString()) as T
+                return VideoViewModel(path) as T
             }
         }
     }
 
     private val isShow = ObservableBoolean(true)
-    private val title = ObservableField<String>()
+
+    private val path by lazy {
+        intent.getStringExtra("data").toString()
+    }
+    private val title by lazy {
+        intent.getStringExtra("title").toString()
+    }
 
     private val data by lazy {
         if (isOnline) {
@@ -55,11 +65,8 @@ class VideoActivity : BaseActivity<ActivityVideoBinding>(R.layout.activity_video
         }
     }
 
-
     override fun initViews() {
-        title.set(intent.getStringExtra("title"))
         binding.isShow = isShow
-        binding.title = title
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         initVideo()
         binding.player.setControllerVisibilityListener(this)
@@ -90,17 +97,43 @@ class VideoActivity : BaseActivity<ActivityVideoBinding>(R.layout.activity_video
                     }
                     .build())
         )
-        player = SimpleExoPlayer.Builder(this)
+
+        val ffmpegRenderFactory = FFMPEGRenderFactory(this)
+            .setExtensionRendererMode(EXTENSION_RENDERER_MODE_PREFER)
+        player = SimpleExoPlayer.Builder(this, ffmpegRenderFactory)
             .setMediaSourceFactory(
-                DefaultMediaSourceFactory(dataSource),
+                DefaultMediaSourceFactory(dataSource)
             )
             .build()
         player.addListener(this)
         binding.player.player = player
+        initController()
+        binding.player.subtitleView?.setStyle(
+            CaptionStyleCompat(
+                Color.WHITE,
+                Color.TRANSPARENT,
+                Color.parseColor("#80000000"),
+                EDGE_TYPE_NONE,
+                Color.WHITE,
+                null
+            )
+        )
         val mediaItem = MediaItem.fromUri(data)
         player.addMediaItem(mediaItem)
         player.prepare()
-        player.play()
+    }
+
+    private fun initController() {
+        binding.player.setShowBuffering(StyledPlayerView.SHOW_BUFFERING_ALWAYS)
+        binding.player.setShowSubtitleButton(true)
+        binding.player.controllerShowTimeoutMs = 0
+        binding.player.setShowNextButton(false)
+        binding.player.setShowPreviousButton(false)
+        val controller =
+            binding.player.findViewById<StyledPlayerControlView>(com.google.android.exoplayer2.ui.R.id.exo_controller)
+        controller.findViewById<TextView>(R.id.exo_title).also {
+            it.text = title
+        }
     }
 
     override fun initViewModel() {
@@ -133,13 +166,14 @@ class VideoActivity : BaseActivity<ActivityVideoBinding>(R.layout.activity_video
         Log.e(TAG, "onPlayerError", error)
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         hideSystemBars()
+        player.play()
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onStop() {
+        super.onStop()
         binding.root.post {
             showSystemBars()
         }
@@ -164,6 +198,19 @@ class VideoActivity : BaseActivity<ActivityVideoBinding>(R.layout.activity_video
             }
         }
         super.onDestroy()
+    }
+
+    override fun onCues(cues: MutableList<Cue>) {
+        Log.e(TAG, "onCues = ${cues.size}")
+        for (cue in cues) {
+            Log.e(TAG, "${cue.text}")
+        }
+    }
+
+    override fun onPlayerErrorChanged(error: PlaybackException?) {
+        error?.let {
+            Toast.makeText(this, "${error.message}", Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onVisibilityChange(visibility: Int) {

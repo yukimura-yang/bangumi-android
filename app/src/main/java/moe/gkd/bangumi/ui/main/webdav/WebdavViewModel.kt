@@ -59,7 +59,7 @@ class WebdavViewModel : BaseViewModel() {
                         return@withContext
                     }
                     if (!isActive) return@withContext
-                    val newList = ArrayList(
+                    val newList = LinkedList(
                         resources.subList(1, resources.size)
                             .sortedWith({ o1, o2 ->
                                 if (o1.isDirectory && o2.isDirectory) {
@@ -73,6 +73,9 @@ class WebdavViewModel : BaseViewModel() {
                                 }
                             })
                     )
+                    newList.removeIf {
+                        it.name.startsWith(".") || it.name.contains("如果您看到此文件")
+                    }
                     newList.add(0, resources.first())
                     this@WebdavViewModel.resources.postValue(newList)
                 }

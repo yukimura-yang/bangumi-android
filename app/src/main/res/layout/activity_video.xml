@@ -6,10 +6,6 @@
         <import type="androidx.databinding.ObservableField" />
 
         <variable
-            name="title"
-            type="ObservableField&lt;String>" />
-
-        <variable
             name="isShow"
             type="androidx.databinding.ObservableBoolean" />
 
@@ -25,23 +21,12 @@
         android:orientation="vertical"
         tools:context=".ui.video.VideoActivity">
 
-        <com.google.android.exoplayer2.ui.PlayerView
+        <com.google.android.exoplayer2.ui.StyledPlayerView
             android:id="@+id/player"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <TextView
-            android:id="@+id/header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#CC000000"
-            android:padding="12dp"
-            android:text="@{title}"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:visibility="@{isShow?View.VISIBLE:View.INVISIBLE}"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="无职转生01" />
+            android:layout_height="match_parent"
+            app:controller_layout_id="@layout/custom_player_controller"
+            app:surface_type="surface_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
